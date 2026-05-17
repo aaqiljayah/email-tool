@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driftveil Labs — Email Outreach Tool</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230d0d0d'/%3E%3Cpolygon points='14,52 26,12 34,12 22,52' fill='%238a6010' opacity='0.4'/%3E%3Cpolygon points='20,52 32,12 40,12 28,52' fill='%23b8901f' opacity='0.65'/%3E%3Cpolygon points='27,52 39,12 47,12 35,52' fill='%23d4a830' opacity='0.95'/%3E%3Ccircle cx='49' cy='13' r='3.5' fill='%23d4a830'/%3E%3Cline x1='12' y1='52' x2='52' y2='52' stroke='%23d4a830' stroke-width='2' opacity='0.6'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0d0d0d;
+  --paper:#f5f2eb;
+  --gold:#c8982a;
+  --gold-light:#e8c96a;
+  --gold-dim:rgba(200,152,42,0.12);
+  --surface:#161410;
+  --surface2:#1e1b16;
+  --border:rgba(200,152,42,0.18);
+  --border-dim:rgba(200,152,42,0.08);
+  --text:#f5f2eb;
+  --muted:rgba(245,242,235,0.45);
+}
+body{
+  background:var(--ink);color:var(--text);
+  font-family:'Epilogue',sans-serif;font-weight:400;
+  min-height:100vh;line-height:1.6;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity:0.025;pointer-events:none;z-index:0;
+}
+
+/* LAYOUT */
+.app{position:relative;z-index:1;display:grid;grid-template-columns:300px 1fr;min-height:100vh}
+@media(max-width:800px){.app{grid-template-columns:1fr;grid-template-rows:auto 1fr}}
+
+/* SIDEBAR */
+.sidebar{
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+}
+.sidebar-header{
+  padding:28px 24px 20px;
+  border-bottom:1px solid var(--border-dim);
+}
+.logo-row{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.logo-name{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase}
+.logo-sub{font-size:0.6rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-top:2px}
+.sidebar-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:4px}
+.sidebar-desc{font-size:0.78rem;color:var(--muted);line-height:1.6}
+
+
+
+.niche-list{padding:12px 24px 24px;display:flex;flex-direction:column;gap:4px}
+.niche-btn{
+  width:100%;text-align:left;padding:12px 14px;
+  background:transparent;border:1px solid transparent;
+  border-radius:8px;cursor:pointer;
+  transition:all 0.2s;
+  display:flex;align-items:center;gap:10px;
+}
+.niche-btn:hover{background:var(--gold-dim);border-color:var(--border-dim)}
+.niche-btn.active{background:var(--gold-dim);border-color:var(--border)}
+.niche-icon{
+  width:32px;height:32px;border-radius:6px;
+  background:rgba(200,152,42,0.08);border:1px solid var(--border-dim);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex-shrink:0;
+}
+.niche-btn.active .niche-icon{background:rgba(200,152,42,0.18);border-color:var(--border)}
+.niche-label{font-size:0.82rem;font-weight:500;color:var(--text);line-height:1.3}
+.niche-sub{font-size:0.7rem;color:var(--muted)}
+
+/* MAIN */
+.main{background:var(--ink);padding:40px clamp(24px,5vw,64px)}
+.welcome{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:60vh;text-align:center;gap:16px;
+}
+.welcome-icon{font-size:2.5rem;opacity:0.3}
+.welcome-title{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;color:rgba(245,242,235,0.3)}
+.welcome-desc{font-size:0.88rem;color:rgba(245,242,235,0.2);max-width:320px;line-height:1.7}
+
+.email-section{display:none;animation:fadeUp 0.35s ease}
+.email-section.visible{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+.section-eyebrow{
+  font-size:0.65rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;
+}
+.section-eyebrow::before{content:'';display:block;width:16px;height:1px;background:var(--gold);opacity:0.6}
+
+.section-title{
+  font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;
+  margin-bottom:6px;
+}
+.section-meta{font-size:0.8rem;color:var(--muted);margin-bottom:36px}
+.region-badge{
+  display:inline-block;
+  padding:3px 10px;border-radius:100px;
+  background:var(--gold-dim);border:1px solid var(--border);
+  font-size:0.65rem;font-weight:700;letter-spacing:0.08em;
+  color:var(--gold-light);margin-right:6px;
+}
+
+.emails-grid{display:flex;flex-direction:column;gap:20px}
+
+.email-card{
+  background:var(--surface);border:1px solid var(--border-dim);
+  border-radius:12px;overflow:hidden;
+  transition:border-color 0.25s;
+}
+.email-card:hover{border-color:var(--border)}
+
+.email-card-header{
+  padding:18px 24px;
+  border-bottom:1px solid var(--border-dim);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  cursor:pointer;
+}
+.email-variant-label{
+  font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:800;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:4px;
+}
+.email-subject-preview{font-size:0.88rem;font-weight:500;color:var(--text)}
+
+.email-card-actions{display:flex;gap:8px;flex-shrink:0}
+.btn{
+  padding:7px 14px;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;
+  font-family:'Syne',sans-serif;border-radius:6px;cursor:pointer;
+  transition:all 0.2s;border:1px solid;
+}
+.btn-ghost{
+  background:transparent;border-color:var(--border-dim);color:var(--muted);
+}
+.btn-ghost:hover{border-color:var(--border);color:var(--text);background:var(--gold-dim)}
+.btn-copy{
+  background:var(--gold-dim);border-color:var(--border);color:var(--gold-light);
+}
+.btn-copy:hover{background:rgba(200,152,42,0.22)}
+.btn-copy.copied{background:rgba(61,186,111,0.12);border-color:rgba(61,186,111,0.3);color:#6ddfa0}
+
+.email-body{
+  padding:24px;
+  display:none;
+}
+.email-body.open{display:block}
+
+.email-meta-row{
+  display:flex;align-items:baseline;gap:6px;margin-bottom:6px;font-size:0.83rem;
+}
+.meta-key{color:var(--muted);min-width:60px;flex-shrink:0}
+.meta-val{color:var(--text);font-weight:500}
+
+.divider{height:1px;background:var(--border-dim);margin:16px 0}
+
+.email-text{
+  font-size:0.88rem;color:rgba(245,242,235,0.7);line-height:1.85;
+  white-space:pre-wrap;
+  background:rgba(0,0,0,0.2);border:1px solid var(--border-dim);
+  border-radius:8px;padding:20px;
+  font-family:'Epilogue',sans-serif;
+}
+
+.tip-box{
+  margin-top:32px;padding:18px 22px;
+  background:rgba(200,152,42,0.05);border:1px solid var(--border-dim);
+  border-radius:10px;
+}
+.tip-label{
+  font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:800;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;
+}
+.tip-text{font-size:0.82rem;color:var(--muted);line-height:1.75}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-row">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="height:32px;width:auto">
+          <rect width="64" height="64" rx="12" fill="#0d0d0d"/>
+          <polygon points="14,52 26,12 34,12 22,52" fill="#8a6010" opacity="0.4"/>
+          <polygon points="20,52 32,12 40,12 28,52" fill="#b8901f" opacity="0.65"/>
+          <polygon points="27,52 39,12 47,12 35,52" fill="#d4a830" opacity="0.95"/>
+          <circle cx="49" cy="13" r="3.5" fill="#d4a830"/>
+          <line x1="12" y1="52" x2="52" y2="52" stroke="#d4a830" stroke-width="2" opacity="0.6"/>
+        </svg>
+        <div>
+          <div class="logo-name">Driftveil Labs</div>
+          <div class="logo-sub">Outreach Tool</div>
+        </div>
+      </div>
+      <div class="sidebar-title">Pick a niche</div>
+      <div class="sidebar-desc">Select the type of business you're targeting and we'll pull up the right email drafts.</div>
+    </div>
+
+    <div class="niche-list" id="nicheList"></div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="main">
+    <div class="welcome" id="welcome">
+      <div class="welcome-icon">✉</div>
+      <div class="welcome-title">Select a business type</div>
+      <div class="welcome-desc">Choose a niche from the sidebar to see your outreach email drafts.</div>
+    </div>
+    <div id="emailOutput"></div>
+  </main>
+
+</div>
+
+<script>
+const DATA = [
+  {
+    id: "restaurant",
+    label: "Restaurants & Cafés",
+    sub: "Dining & food businesses",
+    icon: "🍽",
+    regions: ["lk","my","uk"],
+    tip: "Google Maps is your goldmine. Search '[city] restaurant' and look for listings where the website link is broken, missing, or goes to a Facebook page. That's your hook right there — mention it specifically in your opening line.",
+    emails: [
+      {
+        label: "Hook — No website, found on Google Maps",
+        subject: "Tried to visit your website. There isn't one.",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Searched for [Restaurant Name] on Google Maps — found you, clicked the website link, nothing there.
+
+That means every person who finds you on Maps and wants to check your menu before they come in hits a dead end. Some of them just pick somewhere else.
+
+We build custom restaurant websites — menu, location, opening hours, reservation link. Fast, mobile-first, looks like your brand not a template.
+
+First month hosting is free. No lock-in.
+
+Worth 15 minutes this week?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Facebook page only",
+        subject: "Your food deserves better than a Facebook page",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Found [Restaurant Name] on Facebook — the food looks genuinely great. But when someone searches for you on Google at 7pm trying to decide where to eat, Facebook is not where they end up. They end up at your competitor who has a proper website.
+
+We build custom websites for restaurants. Menu, location, contact, a way to reserve — everything a hungry person needs in one place.
+
+We're Driftveil Labs. Small studio, fast work, no templates. First month hosting on us.
+
+Quick call this week?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Slow or outdated website",
+        subject: "Your menu hasn't changed online since [year] — has it?",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Checked out [Restaurant Name]'s website — took a while to load and the menu looks like it's from a couple of years ago. I'm guessing what you're actually serving right now is a lot better than what's on there.
+
+An outdated site isn't neutral — it actively puts people off.
+
+We rebuild restaurant websites from scratch. Fast load, updated menu, mobile-ready. Takes the headache off you completely.
+
+Happy to show you examples. No sales pitch, just a look.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Follow-up — No reply to first email",
+        subject: "Re: [Restaurant Name]'s website",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Just checking this didn't get buried — sent a note last week about your website.
+
+Not asking for a commitment. Just a 15-minute call to show you what we've built for other restaurants and see if it's something that makes sense for you.
+
+If the timing's off, no problem — happy to come back when it's better.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      }
+    ]
+  },
+  {
+    id: "salon",
+    label: "Salons & Barbershops",
+    sub: "Beauty, hair & grooming",
+    icon: "✂",
+    regions: ["lk","my","uk"],
+    tip: "DM their Instagram first just to get their email — many salon owners respond faster there. Then email properly. The booking-via-DM pain point lands almost every time for this niche.",
+    emails: [
+      {
+        label: "Hook — Booking via DMs",
+        subject: "How many bookings do you miss because someone didn't DM?",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Checked out [Salon Name] — the work looks seriously clean. But I noticed bookings go through Instagram DMs.
+
+Here's the problem: a lot of potential clients won't DM. They'll look for a book now button, not find one, and go to the next salon that has it.
+
+We build salon websites with proper online booking built in. Client picks a slot, you get notified, no back-and-forth. Looks sharp, works perfectly on any phone.
+
+We're Driftveil Labs. First month hosting free, no templates, built to match your brand.
+
+15 minutes to show you what it'd look like?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — No online presence",
+        subject: "Searched for salons in [Area]. You didn't come up.",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Searched '[Area] salon' on Google just now. [Salon Name] didn't appear.
+
+That means everyone in [Area] who isn't already a regular has no way to find you. You're invisible to new clients who are actively looking.
+
+We fix that. A proper website — your services, prices, how to book, photos of your work — so when someone searches, they find you.
+
+We're Driftveil Labs. Quick to set up, first month hosting free.
+
+Worth a conversation?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Generic or template-looking site",
+        subject: "[Salon Name]'s website looks like every other salon",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Found [Salon Name]'s website — you clearly have a strong brand on Instagram, but the website doesn't reflect that at all. It looks like a standard template with your name dropped in.
+
+Your clients notice. New clients especially notice.
+
+We build salon websites from scratch that actually look like the business they represent. No recycled layouts, no stock photos of someone else's salon.
+
+Happy to put together a quick concept for you — no cost, just to show you what's possible.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Follow-up — No reply",
+        subject: "One more thought on [Salon Name]",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Sent you a note a few days ago — just wanted to follow up once before I leave it alone.
+
+I know running a salon is full-on and email isn't always the priority. If you're open to it, even a quick 10-minute chat is enough for me to show you what we do and whether it's worth exploring.
+
+If not, no hard feelings at all.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      }
+    ]
+  },
+  {
+    id: "fitness",
+    label: "Gyms & Personal Trainers",
+    sub: "Fitness studios, PTs, coaches",
+    icon: "🏋",
+    regions: ["lk","my","uk"],
+    tip: "PTs with 1,000–10,000 Instagram followers but no website are the sweet spot. They're building a brand, they just haven't connected it to something Google can find. Search 'personal trainer [city]' on Instagram.",
+    emails: [
+      {
+        label: "Hook — Strong Instagram, invisible on Google",
+        subject: "You have 4,000 followers and zero Google presence",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Came across your Instagram — great content, clearly know what you're doing. But I googled '[City] personal trainer' and you're not there.
+
+Instagram built your audience. Google brings you clients who don't know you yet. Right now you're only getting one of those two.
+
+We build websites for fitness professionals — your services, your story, your pricing, a simple way to get in touch or book a session. The kind of site that ranks on Google and converts when someone lands on it.
+
+Not a big investment. Not a template. Something that works while you train people.
+
+Want to see what it'd look like for your brand?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Gym with no website",
+        subject: "Someone just searched for a gym in [Area]. They didn't find you.",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Looked up gyms in [Area] — [Gym Name] didn't come up on Google. For a gym trying to grow its membership, that's a real problem.
+
+People searching for a gym nearby are the warmest possible leads. They're already decided they want one — they just need to find the right one. If you're not showing up, someone else gets them.
+
+We build gym and studio websites that rank, look professional, and make it dead simple for someone to enquire or sign up.
+
+We're Driftveil Labs. First month hosting free. No templates.
+
+Worth a quick chat?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Fitness coach selling programmes",
+        subject: "You're leaving money on the table with no programme page",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Saw your content — the online coaching / programme side looks like it could be doing a lot more. Right now if someone wants to buy in, they have to DM you or figure it out themselves. That friction loses sales.
+
+A proper website with a clean programme page, testimonials, and a way to sign up changes that completely.
+
+We're Driftveil Labs. We build these for coaches and trainers. Fast, custom, no Linktree nonsense.
+
+10 minutes to show you what we've done?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Follow-up — No reply",
+        subject: "Re: your website",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Dropped you a message last week — just checking it didn't get lost.
+
+One line version: we build websites for fitness professionals that actually get found on Google. First month is free, no templates, done fast.
+
+If the timing's off, just say and I'll circle back. If you're curious, 15 minutes is all it takes.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      }
+    ]
+  },
+  {
+    id: "law",
+    label: "Law Firms & Accountants",
+    sub: "Professional services",
+    icon: "⚖",
+    regions: ["lk","my","uk"],
+    tip: "Find them through Google searches for '[city] solicitor' or '[city] accountant'. Look for sites that have a copyright year in the footer from 5+ years ago — that's your hook. Address the senior partner by name if you can find it.",
+    emails: [
+      {
+        label: "Hook — Dated website",
+        subject: "Your website says © 2018. Your clients notice.",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Looked up [Firm Name] — the work you do is clearly serious, but the website doesn't reflect that. The design is dated, it doesn't work well on mobile, and it reads like it was last updated years ago.
+
+For a professional services firm, the website is often the first thing a prospective client sees before they decide whether to pick up the phone. A site that looks old signals exactly the wrong thing.
+
+We build clean, credible websites for law firms and accountancy practices. No stock photos of handshakes. No generic layouts. A site that matches the standard of the firm.
+
+We're Driftveil Labs. Fast, custom, no fluff.
+
+Would a call this week be worth your time?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — No website at all",
+        subject: "A firm the size of [Firm Name] should have a website",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Tried to find [Firm Name] online — couldn't find a website anywhere. For a firm handling [legal / financial] matters, that absence costs you credibility before you've even spoken to a prospect.
+
+Word of mouth is powerful but it has a ceiling. A clean, professional website extends your reach beyond referrals.
+
+We build websites for professional firms. Credible, fast to load, designed to convert a visitor into an enquiry.
+
+We're Driftveil Labs. Happy to show you what we've done.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Credibility angle",
+        subject: "Your competitors' websites look more established than yours",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Had a look at a few [law / accounting] firms in [Area] — including [Firm Name]. Compared side by side, your site doesn't hold up against what some of your competitors are presenting. That's not a reflection of the quality of your work, but it is what a new client sees first.
+
+We build websites for professional firms that look the part — clear practice areas, clean bios, proper contact flow. The kind of site that converts a sceptical visitor into a phone call.
+
+We're Driftveil Labs. No templates, custom design, fast delivery.
+
+Worth a conversation?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Follow-up — No reply",
+        subject: "Following up — [Firm Name]",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Wanted to follow up on the note I sent last week about your website — just once, I promise I won't keep chasing.
+
+If it's not the right time, completely understood. If you are open to a quick look at what we do, 15 minutes on a call is genuinely all it takes.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      }
+    ]
+  },
+  {
+    id: "clinic",
+    label: "Clinics & Dental Practices",
+    sub: "Healthcare & medical",
+    icon: "🏥",
+    regions: ["lk","my","uk"],
+    tip: "Patients search on mobile at odd hours — evening and weekend searches dominate for clinics. A site that doesn't load fast on mobile is a genuine business problem. Lead with that specific scenario.",
+    emails: [
+      {
+        label: "Hook — No website or broken mobile",
+        subject: "Someone had a toothache at 10pm and couldn't find you",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Here's a scenario that's probably happened to [Practice Name] more than once: someone's in discomfort at night, they google dentists near them, click your link on their phone — and either nothing loads or it barely works.
+
+So they book somewhere else.
+
+We build clinic and dental websites that work perfectly on mobile, load fast, and make it immediately clear how to get in touch or book an appointment. Clean, professional, and built for how patients actually search.
+
+We're Driftveil Labs. No templates, first month hosting free.
+
+Happy to show you what we've done for other practices.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — No online booking",
+        subject: "If patients can't book online, some of them won't book at all",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Checked out [Practice Name] — looks like booking an appointment means calling during business hours. A growing number of patients, especially younger ones, won't do that. They'll find a clinic that lets them book online.
+
+We add proper online appointment request forms to clinic websites. Simple for patients, manageable for your team.
+
+We're Driftveil Labs. We build healthcare websites that are clean, fast, and actually useful for patients.
+
+Worth a 15-minute call?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Generic or outdated look",
+        subject: "Your clinic's website doesn't look as good as your clinic",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Visited [Practice Name]'s website — I'm sure the actual practice is much better than the website suggests. It looks dated, the photos don't reflect the quality of the space, and it doesn't build the kind of trust a new patient needs before they book.
+
+We rebuild clinic websites from scratch. Professional, clean, and designed to actually reassure a new patient rather than make them second-guess.
+
+We're Driftveil Labs. Custom design, fast turnaround, first month free.
+
+Happy to send over some examples.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Follow-up — No reply",
+        subject: "Re: [Practice Name]'s website",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Just a quick follow-up on the message I sent a few days ago — I know running a practice is busy and email isn't always top of the list.
+
+If it's useful, I'm happy to send over a couple of examples of clinic sites we've built so you can see if it's the kind of thing worth exploring.
+
+Either way, no pressure.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      }
+    ]
+  },
+  {
+    id: "retail",
+    label: "Boutique & Independent Retail",
+    sub: "Physical stores, independent shops",
+    icon: "🛍",
+    regions: ["lk","my","uk"],
+    tip: "Find them on Instagram — most boutique retailers have strong IG presence. Their bio email is your target. Mention something specific about their actual products in the opening line. Generic openers get deleted instantly in retail.",
+    emails: [
+      {
+        label: "Hook — Instagram-only, no website",
+        subject: "People are looking for [product type] in [city] and can't find you",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Found [Store Name] on Instagram — [specific product] looks great. But if someone searches '[product] shop [city]' on Google right now, you're not showing up.
+
+Instagram is great for building an audience. Google is where buyers go when they're ready to buy. Right now you're only getting people who already know you exist.
+
+We build retail websites that actually get found — product showcases, contact, directions, and a way to order or enquire. Custom, not a template. Looks like your brand.
+
+We're Driftveil Labs. First month hosting free. No long lock-in.
+
+Worth a quick chat?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Bad or generic website",
+        subject: "Your products deserve a better stage than your current website",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Checked out [Store Name]'s website — your Instagram has real character, but the website doesn't carry that at all. It looks generic, the photos aren't presented well, and it doesn't make someone want to visit or buy.
+
+Your products are the product. The website should sell them, not just list them.
+
+We rebuild retail websites from scratch. Designed to reflect the brand, built to convert.
+
+We're Driftveil Labs. Custom, fast, no templates.
+
+Happy to show you what's possible.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — No e-commerce angle",
+        subject: "Are you selling online yet?",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Came across [Store Name] — great products. Quick question: are you selling online at all, or is it purely walk-in?
+
+If it's walk-in only, you're leaving a significant chunk of potential revenue off the table. A clean product page with a way to order or enquire changes that without the complexity of a full e-commerce build.
+
+We're Driftveil Labs. We build retail sites that look sharp and actually drive sales — not just brochure sites.
+
+Would love to show you what we've done for similar shops.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Follow-up — No reply",
+        subject: "Quick follow-up — [Store Name]",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Sent a note a few days ago — just wanted to follow up once.
+
+I know running a shop is a lot. If you ever want to see what a proper website could look like for [Store Name], I can put together a rough concept for free — no strings, just to show you what's possible.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      }
+    ]
+  },
+  {
+    id: "photographer",
+    label: "Photographers & Creatives",
+    sub: "Photographers, videographers, designers",
+    icon: "📷",
+    regions: ["lk","my","uk"],
+    tip: "Search '[city] wedding photographer' or '[city] commercial photographer' on Google. The ones that don't appear, or appear with a bad site, are your leads. They're on Instagram — find their email in bio or via their Linktree.",
+    emails: [
+      {
+        label: "Hook — Instagram portfolio only",
+        subject: "Your portfolio is buried inside Instagram's algorithm",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Your photography is genuinely strong. But everything you've built is living inside Instagram — which means it only reaches people the algorithm decides to show it to, and disappears from search the moment someone closes the app.
+
+A dedicated portfolio site means your work is findable on Google, presentable to clients who want a proper link, and not subject to what Instagram decides to do tomorrow.
+
+We build portfolio sites for photographers. Fast-loading galleries, your bio, contact — your brand, not someone else's platform.
+
+We're Driftveil Labs. Custom design, not Squarespace. Something that actually looks like you.
+
+Want to see a concept?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Linktree or generic site",
+        subject: "A Linktree is not a portfolio",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Clicked the link in your Instagram bio — it goes to a Linktree. For a photographer trying to win clients, that's the equivalent of handing someone a Post-it note instead of a business card.
+
+Clients want to see your work presented properly. A Linktree doesn't do that.
+
+We build portfolio sites that load fast, look exceptional, and actually show what you can do. The kind of thing you can send to a potential client and know it lands.
+
+We're Driftveil Labs. No templates, custom design, fast turnaround.
+
+10 minutes to show you what we've built?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Wedding / event photographer",
+        subject: "Couples aren't just checking Instagram before booking a photographer",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Couples planning a wedding google photographers, not just scroll Instagram. If [Your Name / Studio Name] doesn't have a proper website, you're invisible to everyone who starts their search on Google — which is most of them.
+
+We build wedding and event photography websites. Galleries by category, a clean about page, a contact form that actually gets replies. The kind of site that books clients.
+
+We're Driftveil Labs. Custom, fast, first month hosting free.
+
+Would love to show you some examples.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Follow-up — No reply",
+        subject: "Re: portfolio website",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Just following up on the message I sent last week — not trying to be pushy, just don't want it to get lost.
+
+If you're curious what a proper portfolio site could look like for your work, I'm happy to put together a rough mock for free. No commitment, just to see if it's something worth exploring.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      }
+    ]
+  },
+  {
+    id: "tuition",
+    label: "Tuition & Education",
+    sub: "Tuition centres, tutors, training",
+    icon: "📚",
+    regions: ["lk","my","uk"],
+    tip: "Parents are your real audience, not the tuition centre owner. Frame everything around what a parent needs to see to trust a centre with their child. In Sri Lanka and Malaysia, Facebook groups are where these businesses get found — which means they're invisible on Google.",
+    emails: [
+      {
+        label: "Hook — WhatsApp only, no Google presence",
+        subject: "Parents are googling tutors in [Area] and not finding you",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Searched for tuition in [Area] — [Centre Name] didn't come up. A parent who doesn't already have a recommendation has no way to find you.
+
+That parent is looking right now. They're not asking in a Facebook group — they're googling. And they're landing on whoever has a proper website.
+
+We build tuition centre websites. Subjects offered, teacher profiles, schedule, how to enrol — everything a parent needs to make a decision and pick up the phone.
+
+We're Driftveil Labs. Custom design, fast turnaround, first month hosting free.
+
+Worth a conversation?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Trust and credibility angle",
+        subject: "Parents need to trust you before they call. Does your website help?",
+        to: "[Name]",
+        body: `Hi [Name],
+
+When a parent is deciding where to send their child for tuition, trust is everything. They're going to look you up before they call.
+
+If what they find is a WhatsApp number and a Facebook post, that's not enough. A proper website with teacher profiles, subject breakdowns, and a clear way to enrol makes a huge difference to that first impression.
+
+We build tuition centre websites designed to convert a sceptical parent into an enquiry.
+
+We're Driftveil Labs. No templates, no fluff.
+
+Happy to show you what we've built for similar centres.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Individual tutor, no site",
+        subject: "You're a good tutor. Does your online presence say that?",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Found you through [Platform / Facebook / Recommendation] — clearly experienced in [subject]. But if a parent googles you before reaching out, there's nothing there to back that up.
+
+A simple personal website — your background, subjects, how to get in touch — changes that completely. It's the difference between someone taking a chance on you and someone feeling confident.
+
+We build exactly this for tutors and educators. Clean, fast, professional.
+
+We're Driftveil Labs. Affordable, no templates, quick to deliver.
+
+Worth a chat?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Follow-up — No reply",
+        subject: "Re: [Centre Name] website",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Just a quick follow-up on my message from last week — wanted to check it didn't get missed.
+
+One thing that might be useful: I can put together a rough look at what a website for [Centre Name] could look like, completely free, just so you can see if it's worth exploring before committing to anything.
+
+Let me know if that's of interest.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      }
+    ]
+  },
+  {
+    id: "contractor",
+    label: "Contractors & Tradespeople",
+    sub: "Plumbers, electricians, builders",
+    icon: "🔧",
+    regions: ["lk","my","uk"],
+    tip: "Find them through Facebook local groups, Google Maps listings with no website, or local directory sites. Many list a mobile number and nothing else. The angle is simple: word of mouth has a ceiling, Google doesn't.",
+    emails: [
+      {
+        label: "Hook — Word of mouth only",
+        subject: "Word of mouth is great. Until it isn't.",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Most [plumbers / electricians / builders] in [Area] rely entirely on referrals. It works — until work slows down and there's nothing pulling in new jobs.
+
+A simple website means when someone in [Area] searches for a [tradesperson] at 9pm because something's gone wrong, you're the one they find. Not just who their neighbour happened to mention.
+
+We build no-nonsense websites for tradespeople. Your services, your coverage area, how to call or message you. Fast, professional, easy to find on Google.
+
+We're Driftveil Labs. First month hosting free, quick to set up.
+
+Worth 10 minutes?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Urgency-based search angle",
+        subject: "When someone's pipe bursts, they google. Are you there?",
+        to: "[Name]",
+        body: `Hi [Name],
+
+When someone has an emergency — burst pipe, electrical fault, roof issue — the first thing they do is google '[trade] near me'. Not ask friends, not check Facebook. Google.
+
+If [Business Name] isn't showing up, those jobs go to someone else. And they're exactly the kind of high-urgency, willing-to-pay jobs you want.
+
+A simple, fast website with your services and a clear way to contact you is all it takes to capture those searches.
+
+We're Driftveil Labs. We build clean, search-friendly websites for tradespeople. First month free.
+
+Is it worth a quick chat?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Looks unestablished without a site",
+        subject: "A professional tradesperson should have more than a Facebook page",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Looked up [Business Name] — found a Facebook page, but no website. For a client comparing a few contractors before they decide who to hire, that can be the difference between choosing you and choosing someone who looks more established online.
+
+The work speaks for itself — but only if people can find it and trust you enough to make contact.
+
+We build websites for contractors. Photos of your work, your services, reviews, a simple contact button. The kind of page that converts a browser into a call.
+
+We're Driftveil Labs. No templates, fast setup, first month free.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Follow-up — No reply",
+        subject: "Re: website for [Business Name]",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Just following up on the message I sent last week — keeping it short.
+
+If you're not interested, totally fine — just say and I won't bother you again. If you are curious, even 10 minutes on a call is enough to show you what we do.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      }
+    ]
+  },
+  {
+    id: "realestate",
+    label: "Real Estate & Property",
+    sub: "Agents, developers, lettings",
+    icon: "🏘",
+    regions: ["lk","my","uk"],
+    tip: "Independent agents are the target — not the big chains. In Sri Lanka, look for individual property brokers advertising on sites like ikman.lk but with no website of their own. In Malaysia, PropertyGuru agents often have no standalone site.",
+    emails: [
+      {
+        label: "Hook — Independent agent, no site",
+        subject: "Buyers google before they call. What do they find when they google you?",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Most buyers and renters do their research before they ever make contact with an agent. They google the person's name, look for reviews, check their listings. If [Your Name / Agency] doesn't have a proper website, you're asking them to trust someone with no digital footprint.
+
+We build websites for independent agents and small agencies. Current listings, your bio, client testimonials, contact. Clean, professional, and actually findable on Google.
+
+We're Driftveil Labs. Custom, fast, first month free.
+
+Worth a conversation this week?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Looks less credible than competitors",
+        subject: "Your competitors have a website. You don't.",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Looked at a few agents in [Area] — [Agency Name] was the only one without a proper website. When a potential client is comparing agents, that gap matters.
+
+It's not about having the fanciest site. It's about having something that makes you look like a legitimate, established professional.
+
+We build property websites that do exactly that. Listings, your background, how to get in touch. Built to make the right first impression.
+
+We're Driftveil Labs. No templates, custom design, quick to deliver.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Hook — Property developer, no project page",
+        subject: "Where do buyers go to learn more about [Project Name]?",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Came across [Project / Development Name] — looks like a strong project. But when I tried to find more details online, there wasn't a dedicated page anywhere.
+
+For a buyer doing their research before committing, 'no website' means 'I'll look at the next project'. A clean project page with specs, photos, pricing guide, and a contact form removes that friction entirely.
+
+We build property and development websites. Fast, professional, designed to convert interest into enquiries.
+
+We're Driftveil Labs. Happy to show you examples.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Follow-up — No reply",
+        subject: "Re: [Agency Name] website",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Following up on the note I sent last week — just the once, I won't keep chasing.
+
+If the timing isn't right, no problem. If you'd like to see what a website for [Agency Name] could look like before deciding, I'm happy to put together a rough concept for free.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      }
+    ]
+  },
+  {
+    id: "warm",
+    label: "Warm Outreach",
+    sub: "Referrals & known contacts",
+    icon: "🤝",
+    regions: ["lk","my","uk"],
+    tip: "Name the mutual contact in both the subject line and first line — it's the single biggest thing you can do to get a warm email opened and replied to. Keep it short. They're already half-sold.",
+    emails: [
+      {
+        label: "Warm — Referral, mutual contact",
+        subject: "[Mutual contact] said to reach out",
+        to: "[Name]",
+        body: `Hi [Name],
+
+[Mutual contact] suggested I get in touch — mentioned you've been thinking about getting a proper website sorted for [Business Name].
+
+We're Driftveil Labs. We build fully custom websites from scratch — no templates, no builders, everything hand-built. The kind of site that makes your business look exactly like what it is.
+
+I'll keep it short: 15 minutes on a call and I can show you a few things we've built and hear what you're after. No pressure, no pitch.
+
+When works for you?
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Warm — Post-meeting follow-up",
+        subject: "Good to meet you — the website",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Good to meet you [yesterday / recently / at the event]. Wanted to follow up properly rather than leave it at 'I'll send something'.
+
+We're Driftveil Labs — we build custom websites, fully hand-coded, no templates. Everything from the design through to going live is handled by us.
+
+I'll send over a couple of examples this week so you can see the kind of work we do. If it looks like a fit, we hop on a call and go from there.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Warm — You know them personally",
+        subject: "Wanted to mention what we're building",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Hope you're well — haven't spoken in a while.
+
+I wanted to mention something we've been working on: we started a web studio called Driftveil Labs. We build custom websites for businesses — fully hand-coded, no templates, the whole thing built to actually perform.
+
+Thought of you because of [Business Name] — if a website is something you've been thinking about or putting off, I'd love to show you what we've been doing. No sales pitch, just a look.
+
+Let me know if you're curious.
+
+[Your name] · Driftveil Labs · info@driftveillabs.com`
+      },
+      {
+        label: "Warm — Family / close network",
+        subject: "Can you help spread the word?",
+        to: "[Name]",
+        body: `Hi [Name],
+
+Hope everything's good with you.
+
+I've just launched a web design studio with a few friends — we're called Driftveil Labs. We build custom websites for businesses, and we're looking for our first few clients.
+
+I'm not asking you to commit to anything — I just thought if you know anyone who's been needing a website sorted, or a business that has a terrible one, you might think of us. A referral or even just mentioning our name would mean a lot right now.
+
+If you want to see what we do, happy to show you — our email is info@driftveillabs.com.
+
+Thanks so much.
+
+[Your name]`
+      }
+    ]
+  }
+];
+
+let activeNiche = null;
+
+function buildSidebar() {
+  const list = document.getElementById('nicheList');
+  list.innerHTML = '';
+  DATA.forEach(niche => {
+    const btn = document.createElement('button');
+    btn.className = 'niche-btn' + (activeNiche === niche.id ? ' active' : '');
+    btn.innerHTML = `
+      <div class="niche-icon">${niche.icon}</div>
+      <div>
+        <div class="niche-label">${niche.label}</div>
+        <div class="niche-sub">${niche.sub}</div>
+      </div>`;
+    btn.onclick = () => selectNiche(niche.id);
+    list.appendChild(btn);
+  });
+}
+
+function selectNiche(id) {
+  activeNiche = id;
+  buildSidebar();
+  renderEmails(id);
+}
+
+function renderEmails(id) {
+  const niche = DATA.find(n => n.id === id);
+  if (!niche) return;
+
+  document.getElementById('welcome').style.display = 'none';
+  const out = document.getElementById('emailOutput');
+
+  const regionLabels = {lk:'🇱🇰 Sri Lanka', my:'🇲🇾 Malaysia', uk:'🇬🇧 UK'};
+
+  let cardsHtml = niche.emails.map((email, i) => `
+    <div class="email-card">
+      <div class="email-card-header" onclick="toggleCard(${id}_${i})">
+        <div style="flex:1;min-width:0">
+          <div class="email-variant-label">${email.label}</div>
+          <div class="email-subject-preview">✉ ${email.subject}</div>
+        </div>
+        <div class="email-card-actions">
+          <button class="btn btn-copy" id="copy_${id}_${i}" onclick="copyEmail(event, '${id}', ${i})">Copy</button>
+        </div>
+      </div>
+      <div class="email-body" id="body_${id}_${i}">
+        <div class="email-meta-row"><span class="meta-key">To:</span><span class="meta-val">${email.to}</span></div>
+        <div class="email-meta-row"><span class="meta-key">Subject:</span><span class="meta-val">${email.subject}</span></div>
+        <div class="divider"></div>
+        <div class="email-text">${escHtml(email.body)}</div>
+      </div>
+    </div>
+  `).join('');
+
+  out.innerHTML = `
+    <div class="email-section visible">
+      <div class="section-eyebrow">${niche.icon} Niche</div>
+      <div class="section-title">${niche.label}</div>
+      <div class="section-meta">${niche.emails.length} draft${niche.emails.length > 1 ? 's' : ''}</div>
+      <div class="emails-grid">${cardsHtml}</div>
+      <div class="tip-box">
+        <div class="tip-label">💡 Sending tip</div>
+        <div class="tip-text">${niche.tip}</div>
+      </div>
+    </div>`;
+
+  // Auto-open first card
+  const firstBody = document.getElementById(`body_${id}_0`);
+  if (firstBody) firstBody.classList.add('open');
+}
+
+function toggleCard(compositeId) {
+  // not used directly, handled via onclick string
+}
+
+document.addEventListener('click', function(e) {
+  const header = e.target.closest('.email-card-header');
+  if (!header) return;
+  if (e.target.closest('.email-card-actions')) return;
+  const card = header.parentElement;
+  const body = card.querySelector('.email-body');
+  if (body) body.classList.toggle('open');
+});
+
+function copyEmail(e, nicheId, idx) {
+  e.stopPropagation();
+  const niche = DATA.find(n => n.id === nicheId);
+  if (!niche) return;
+  const email = niche.emails[idx];
+  const text = `Subject: ${email.subject}\n\n${email.body}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById(`copy_${nicheId}_${idx}`);
+    if (!btn) return;
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+buildSidebar();
+</script>
+</body>
+</html>
