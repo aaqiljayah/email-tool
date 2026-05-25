@@ -14,12 +14,17 @@
   --gold:#c8982a;
   --gold-light:#e8c96a;
   --gold-dim:rgba(200,152,42,0.12);
+  --gold-dim2:rgba(200,152,42,0.06);
   --surface:#161410;
   --surface2:#1e1b16;
   --border:rgba(200,152,42,0.18);
   --border-dim:rgba(200,152,42,0.08);
   --text:#f5f2eb;
   --muted:rgba(245,242,235,0.45);
+  --muted2:rgba(245,242,235,0.25);
+  --wa-green:#37d166;
+  --wa-bg:rgba(55,209,102,0.1);
+  --wa-border:rgba(55,209,102,0.25);
 }
 body{
   background:var(--ink);color:var(--text);
@@ -34,7 +39,7 @@ body::before{
 
 /* LAYOUT */
 .app{position:relative;z-index:1;display:grid;grid-template-columns:300px 1fr;min-height:100vh}
-@media(max-width:800px){.app{grid-template-columns:1fr;grid-template-rows:auto 1fr}}
+@media(max-width:900px){.app{grid-template-columns:1fr}}
 
 /* SIDEBAR */
 .sidebar{
@@ -43,6 +48,7 @@ body::before{
   display:flex;flex-direction:column;
   position:sticky;top:0;height:100vh;overflow-y:auto;
 }
+@media(max-width:900px){.sidebar{position:relative;height:auto}}
 .sidebar-header{
   padding:28px 24px 20px;
   border-bottom:1px solid var(--border-dim);
@@ -53,7 +59,49 @@ body::before{
 .sidebar-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:4px}
 .sidebar-desc{font-size:0.78rem;color:var(--muted);line-height:1.6}
 
-
+/* VARIABLES BUILDER */
+.variables-section{
+  padding:16px 24px;
+  background:var(--surface2);
+  border-bottom:1px solid var(--border-dim);
+}
+.variables-title{
+  font-family:'Syne',sans-serif;
+  font-size:0.7rem;
+  font-weight:800;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:12px;
+}
+.variables-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+.v-input-group{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.v-input-group label{
+  font-size:0.65rem;
+  font-weight:600;
+  color:var(--muted);
+}
+.v-input{
+  background:rgba(0,0,0,0.3);
+  border:1px solid var(--border-dim);
+  border-radius:6px;
+  padding:6px 10px;
+  color:var(--text);
+  font-size:0.75rem;
+  font-family:'Epilogue',sans-serif;
+}
+.v-input:focus{
+  outline:none;
+  border-color:var(--gold);
+}
 
 .niche-list{padding:12px 24px 24px;display:flex;flex-direction:column;gap:4px}
 .niche-btn{
@@ -100,13 +148,46 @@ body::before{
   font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;
   margin-bottom:6px;
 }
-.section-meta{font-size:0.8rem;color:var(--muted);margin-bottom:36px}
-.region-badge{
-  display:inline-block;
-  padding:3px 10px;border-radius:100px;
-  background:var(--gold-dim);border:1px solid var(--border);
-  font-size:0.65rem;font-weight:700;letter-spacing:0.08em;
-  color:var(--gold-light);margin-right:6px;
+.section-meta{font-size:0.8rem;color:var(--muted);margin-bottom:24px}
+
+/* SUB-NICHE SELECTOR PILLS */
+.subniche-container{
+  margin-bottom:30px;
+}
+.subniche-label{
+  font-size:0.65rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+.subniche-pills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.subniche-pill{
+  padding:8px 16px;
+  border-radius:100px;
+  background:var(--surface2);
+  border:1px solid var(--border-dim);
+  color:var(--muted);
+  font-size:0.78rem;
+  font-family:'Epilogue',sans-serif;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.subniche-pill:hover{
+  border-color:var(--border);
+  color:var(--text);
+  background:var(--gold-dim2);
+}
+.subniche-pill.active{
+  background:var(--gold-dim);
+  border-color:var(--gold);
+  color:var(--gold-light);
+  font-weight:500;
 }
 
 .emails-grid{display:flex;flex-direction:column;gap:20px}
@@ -188,7 +269,7 @@ body::before{
 .section-divider-label{
   font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:800;
   letter-spacing:0.14em;text-transform:uppercase;
-  color:rgba(37,211,102,0.7);white-space:nowrap;
+  color:var(--wa-green);white-space:nowrap;
 }
 .wa-card{
   background:var(--surface);border:1px solid rgba(37,211,102,0.15);
@@ -205,7 +286,7 @@ body::before{
 .wa-variant-label{
   font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:800;
   letter-spacing:0.12em;text-transform:uppercase;
-  color:rgba(37,211,102,0.8);margin-bottom:4px;
+  color:var(--wa-green);margin-bottom:4px;
 }
 .wa-preview{font-size:0.88rem;font-weight:500;color:var(--text)}
 .btn-wa{
@@ -213,6 +294,18 @@ body::before{
 }
 .btn-wa:hover{background:rgba(37,211,102,0.15)}
 .btn-wa.copied{background:rgba(61,186,111,0.12);border-color:rgba(61,186,111,0.3);color:#6ddfa0}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;padding:12px 18px;font-size:0.82rem;color:var(--text);
+  z-index:999;display:flex;align-items:center;gap:8px;
+  transform:translateY(16px);opacity:0;transition:all 0.25s ease;
+  pointer-events:none;
+}
+.toast.show{transform:none;opacity:1}
+.toast-icon{color:var(--gold-light);font-size:16px}
 </style>
 </head>
 <body>
@@ -237,7 +330,38 @@ body::before{
         </div>
       </div>
       <div class="sidebar-title">Pick a niche</div>
-      <div class="sidebar-desc">Select the type of business you're targeting and we'll pull up the right email drafts.</div>
+      <div class="sidebar-desc">Select the type of business you're targeting to view sub-niches.</div>
+    </div>
+
+    <!-- LIVE VARIABLE BUILDER -->
+    <div class="variables-section">
+      <div class="variables-title">⚡ Variable Customizer</div>
+      <div class="variables-grid">
+        <div class="v-input-group">
+          <label>Your Name</label>
+          <input type="text" id="v_sender_name" class="v-input" value="Aaqil" oninput="updateAllDrafts()">
+        </div>
+        <div class="v-input-group">
+          <label>Your Role</label>
+          <input type="text" id="v_sender_role" class="v-input" value="Co-Founder" oninput="updateAllDrafts()">
+        </div>
+        <div class="v-input-group">
+          <label>Your Email</label>
+          <input type="text" id="v_sender_email" class="v-input" value="info@driftveillabs.com" oninput="updateAllDrafts()">
+        </div>
+        <div class="v-input-group">
+          <label>Client Contact (Name)</label>
+          <input type="text" id="v_client_name" class="v-input" value="[Name]" placeholder="e.g. Dr. Perera" oninput="updateAllDrafts()">
+        </div>
+        <div class="v-input-group">
+          <label>Client Business</label>
+          <input type="text" id="v_client_biz" class="v-input" value="[Business Name]" placeholder="e.g. Smile Dental" oninput="updateAllDrafts()">
+        </div>
+        <div class="v-input-group">
+          <label>City / Area</label>
+          <input type="text" id="v_client_area" class="v-input" value="[Area]" placeholder="e.g. Colombo" oninput="updateAllDrafts()">
+        </div>
+      </div>
     </div>
 
     <div class="niche-list" id="nicheList"></div>
@@ -247,1353 +371,1811 @@ body::before{
   <main class="main" id="main">
     <div class="welcome" id="welcome">
       <div class="welcome-icon">✉</div>
-      <div class="welcome-title">Select a business type</div>
-      <div class="welcome-desc">Choose a niche from the sidebar to see your outreach email drafts.</div>
+      <div class="welcome-title">Select a business category</div>
+      <div class="welcome-desc">Choose a parent niche from the sidebar and we'll unpack the sub-niche templates.</div>
     </div>
     <div id="emailOutput"></div>
   </main>
 
 </div>
 
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="toast-icon">✓</span><span id="toastMsg">Copied</span></div>
+
 <script>
 const DATA = [
   {
-    id: "restaurant",
-    label: "Restaurants & Cafés",
+    id: "Restaurant",
+    label: "Restaurant / F&B",
     sub: "Dining & food businesses",
     icon: "🍽",
-    regions: ["lk","my","uk"],
-    tip: "Google Maps is your goldmine. Search '[city] restaurant' and look for listings where the website link is broken, missing, or goes to a Facebook page. That's your hook right there — mention it specifically in your opening line.",
-    emails: [
-      {
-        label: "Hook — No website, found on Google Maps",
-        subject: "Quick question about [Restaurant Name]",
-        to: "[Name]",
-        body: `Hi [Name],
+    tip: "F&B owners are usually on their feet or checking their phones during off-peak hours (2 PM – 4 PM). WhatsApp outreach during these hours yields highly optimized responsive website orders.",
+    subNiches: {
+      "Restaurant (sit-down)": {
+        tip: "Focus on the reservation & guest experience. Many sit-down restaurants still use clunky external links or require parents to call to secure a Friday slot.",
+        emails: [
+          {
+            label: "Hook — Clunky booking / PDF menus",
+            subject: "Quick question about reservations at [Business Name]",
+            body: `Hi [Name],
 
-I was looking up [Restaurant Name] on Google Maps earlier — great listing, but the website link doesn't go anywhere.
+I was looking to book a table at [Business Name] on my phone earlier — the food looks fantastic, but checking the menu required zooming in on a massive PDF file, and booking a table redirecting to an external site that took forever to load.
 
-Wanted to flag it because anyone who finds you on Maps and tries to check your menu or hours before visiting just hits a dead end. A few of them will look elsewhere.
+When people search for a spot to eat in [Area], they want to browse your menu and book a table instantly. If the experience on mobile is slow, they go straight to whoever is easiest to book with.
 
-We build websites for restaurants — menu, location, opening hours, reservation link. Hand-built, mobile-first, looks like your place not a template. No long-term contracts.
+We hand-build incredibly fast, beautiful sites for sit-down restaurants with live menus and seamless reservation flow.
 
-Worth a quick 15-minute call this week?
-
-[Your name]
-
-[Your role]
-
-Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      },
-      {
-        label: "Hook — Facebook page only",
-        subject: "Found [Restaurant Name] on Facebook",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Came across [Restaurant Name] on Facebook — the food looks genuinely great.
-
-One thing I noticed: when someone searches for you on Google at 7pm trying to decide where to eat, Facebook isn't usually where they end up. They land on whoever has a proper website with a menu they can browse immediately.
-
-We build websites for restaurants — menu, location, how to reserve, everything a hungry person needs in one place. Hand-built, no templates, done fast.
-
-Happy to show you a couple of examples if it's useful.
+Would you be open to a quick 10-minute call to see what we could put together for you?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
+[Your email] · driftveillabs.com`
+          },
+          {
+            label: "Hook — Outdated menu gallery",
+            subject: "Menu update suggestion for [Business Name]",
+            body: `Hi [Name],
 
-info@driftveillabs.com · driftveillabs.com`
-      },
-      {
-        label: "Hook — Slow or outdated website",
-        subject: "A few things I noticed on [Restaurant Name]'s site",
-        to: "[Name]",
-        body: `Hi [Name],
+I checked out [Business Name] online and noticed that your menu presentation doesn't quite match the real-life standard of your dishes.
 
-I had a look at [Restaurant Name]'s website earlier — it took a while to load and the menu looks like it hasn't been updated in a while. I'm guessing what you're actually serving is a lot better than what's showing online.
+When diners are searching in [Area] at 6 PM, they look for visual verification. High-converting menus are interactive, show crisp images, and work perfectly on smartphones.
 
-An outdated site isn't just neutral — it actively puts people off before they've even walked in.
+We build responsive, fast-loading restaurant menus that turn hungry visitors into booked covers.
 
-We rebuild restaurant websites from scratch. Fast to load, easy to update, looks sharp on any phone. We handle everything so it's not another thing on your plate.
-
-Happy to show you some examples, no obligation.
+Would you like to see a custom concept we can build for [Business Name]?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — PDF Menu Hook",
+            body: `Hi [Name], I noticed the menu link for [Business Name] goes to a PDF. It makes viewing hard on mobile. We design custom mobile menus that increase table bookings. Worth a quick look? [Your name] — driftveillabs.com`
+          }
+        ]
       },
-      {
-        label: "Follow-up — No reply to first email",
-        subject: "Re: [Restaurant Name]",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Just wanted to follow up on the note I sent last week — only doing it the once, I won't keep chasing.
-
-If the timing isn't right at the moment, no problem at all. If you'd like to see what a site for [Restaurant Name] could look like before deciding, I'm happy to put something together.
-
-[Your name]
-
-[Your role]
-
-Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      }
-    ],
-    whatsapp: [
-      {
-        label: "WhatsApp — No website, found on Google Maps",
-        body: `Hi [Name], I was looking up [Restaurant Name] on Google Maps and noticed the website link isn't working.
-
-Just wanted to flag it — anyone checking your menu before visiting hits a dead end, and some will just pick somewhere else.
-
-We build websites for restaurants — menu, hours, location, reservation link. Hand-built, no templates.
-
-Worth a quick chat? I'm [Your name] from Driftveil Labs.`
-      },
-      {
-        label: "WhatsApp — Facebook page only",
-        body: `Hi [Name], came across [Restaurant Name] on Facebook — food looks great.
-
-Just noticed there's no website, which means you're missing anyone who searches Google looking for somewhere to eat.
-
-We build restaurant websites — hand-built, mobile-first, looks like your place not a template.
-
-Happy to show you some examples if you're curious. I'm [Your name] from Driftveil Labs.`
-      },
-      {
-        label: "WhatsApp — Follow-up",
-        body: `Hi [Name], just following up on the message I sent — only doing it once, I promise!
-
-If the timing's off no worries at all. If you'd like to see what a site for [Restaurant Name] could look like, happy to put something together.
-
-I'm [Your name] from Driftveil Labs — driftveillabs.com`
-      }
-    ]
-  },
-  {
-    id: "salon",
-    label: "Salons & Barbershops",
-    sub: "Beauty, hair & grooming",
-    icon: "✂",
-    regions: ["lk","my","uk"],
-    tip: "DM their Instagram first just to get their email — many salon owners respond faster there. Then email properly. The booking-via-DM pain point lands almost every time for this niche.",
-    emails: [
-      {
-        label: "Hook — Booking via DMs",
-        subject: "How many bookings do you miss because someone didn't DM?",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Checked out [Salon Name] — the work looks seriously clean. But I noticed bookings go through Instagram DMs.
-
-Here's the problem: a lot of potential clients won't DM. They'll look for a book now button, not find one, and go to the next salon that has it.
-
-We build salon websites with proper online booking built in. Client picks a slot, you get notified, no back-and-forth. Looks sharp, works perfectly on any phone.
-
-We're Driftveil Labs. First month hosting free, no templates, built to match your brand.
-
-15 minutes to show you what it'd look like?
-
-[Your name]
-
-[Your role]
-
-Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      },
-      {
-        label: "Hook — No online presence",
-        subject: "Searched for salons in [Area]. You didn't come up.",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Searched '[Area] salon' on Google just now. [Salon Name] didn't appear.
-
-That means everyone in [Area] who isn't already a regular has no way to find you. You're invisible to new clients who are actively looking.
-
-We fix that. A proper website — your services, prices, how to book, photos of your work — so when someone searches, they find you.
-
-We're Driftveil Labs. Quick to set up, first month hosting free.
-
-Worth a conversation?
-
-[Your name]
-
-[Your role]
-
-Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      },
-      {
-        label: "Hook — Generic or template-looking site",
-        subject: "[Salon Name]'s website looks like every other salon",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Found [Salon Name]'s website — you clearly have a strong brand on Instagram, but the website doesn't reflect that at all. It looks like a standard template with your name dropped in.
-
-Your clients notice. New clients especially notice.
-
-We build salon websites from scratch that actually look like the business they represent. No recycled layouts, no stock photos of someone else's salon.
-
-Happy to put together a quick concept for you — no cost, just to show you what's possible.
-
-[Your name]
-
-[Your role]
-
-Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      },
-      {
-        label: "Follow-up — No reply",
-        subject: "One more thought on [Salon Name]",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Sent you a note a few days ago — just wanted to follow up once before I leave it alone.
-
-I know running a salon is full-on and email isn't always the priority. If you're open to it, even a quick 10-minute chat is enough for me to show you what we do and whether it's worth exploring.
-
-If not, no hard feelings at all.
-
-[Your name]
-
-[Your role]
-
-Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      }
-    ],
-    whatsapp: [
-      {
-        label: "WhatsApp — Booking via DMs",
-        body: `Hi [Name], I saw [Salon Name] is still handling bookings through Instagram DMs.
-
-That means a lot of people who want to book quickly won't follow through. A website with a booking page fixes that.
-
-We build salon sites with online booking built in. Want to see a quick example?`
-      },
-      {
-        label: "WhatsApp — No online presence",
-        body: `Hi [Name], I searched for salons in [Area] and couldn't find [Salon Name] online.
-
-If potential clients can't find you, they're going to the salon that shows up first.
-
-We build custom salon websites that actually rank and look good. Want to chat for a few minutes?`
-      },
-      {
-        label: "WhatsApp — Follow-up",
-        body: `Hi [Name], just following up on the message I sent about [Salon Name].
-
-If it's not the right time, no problem. If you'd like, I can send over a quick example of what a salon website could look like for you.`
-      }
-    ]
-  },
-  {
-    id: "fitness",
-    label: "Gyms & Personal Trainers",
-    sub: "Fitness studios, PTs, coaches",
-    icon: "🏋",
-    regions: ["lk","my","uk"],
-    tip: "PTs with 1,000–10,000 Instagram followers but no website are the sweet spot. They're building a brand, they just haven't connected it to something Google can find. Search 'personal trainer [city]' on Instagram.",
-    emails: [
-      {
-        label: "Hook — Strong Instagram, invisible on Google",
-        subject: "You have 4,000 followers and zero Google presence",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Came across your Instagram — great content, clearly know what you're doing. But I googled '[City] personal trainer' and you're not there.
-
-Instagram built your audience. Google brings you clients who don't know you yet. Right now you're only getting one of those two.
-
-We build websites for fitness professionals — your services, your story, your pricing, a simple way to get in touch or book a session. The kind of site that ranks on Google and converts when someone lands on it.
-
-Not a big investment. Not a template. Something that works while you train people.
-
-Want to see what it'd look like for your brand?
-
-[Your name]
-
-[Your role]
-
-Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      },
-      {
-        label: "Hook — Gym with no website",
-        subject: "Someone just searched for a gym in [Area]. They didn't find you.",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Looked up gyms in [Area] — [Gym Name] didn't come up on Google. For a gym trying to grow its membership, that's a real problem.
-
-People searching for a gym nearby are the warmest possible leads. They're already decided they want one — they just need to find the right one. If you're not showing up, someone else gets them.
-
-We build gym and studio websites that rank, look professional, and make it dead simple for someone to enquire or sign up.
-
-We're Driftveil Labs. First month hosting free. No templates.
+      "Café & Coffee Shop": {
+        tip: "Cafés rely on localized visual allure. Emphasize a sleek, single-page site loaded with operating hours, signature beans, and high-fidelity aesthetics.",
+        emails: [
+          {
+            label: "Hook — Instagram/Facebook only",
+            subject: "Found [Business Name] on socials (quick question)",
+            body: `Hi [Name],
+
+Love the aesthetic you're building at [Business Name]. I noticed you only have an Instagram page and no central website.
+
+While Instagram is amazing, local coffee-lovers searching Google for 'best coffee in [Area]' aren't finding you directly. Instead, they find your competitors who have dedicated Google Maps integration and sites displaying hours, location, and roast profiles.
+
+We build clean, ultra-fast landing pages for local cafes that act as a permanent home for your beans and location maps.
 
 Worth a quick chat?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — social-only hook",
+            body: `Hi [Name], saw the great coffee photos at [Business Name]! I noticed you don't have a standalone site. We build simple, high-speed landing pages for coffee shops to pull local Google searches. Let me know if you want to see a concept!`
+          }
+        ]
       },
-      {
-        label: "Hook — Fitness coach selling programmes",
-        subject: "You're leaving money on the table with no programme page",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Takeaway & Delivery": {
+        tip: "Commission fees are their biggest pain point. Address how much money they're throwing away to UberEats, Foodpanda, or Deliveroo by not hosting their own direct ordering site.",
+        emails: [
+          {
+            label: "Hook — Save commissions on delivery",
+            subject: "Keep 100% of your delivery revenue at [Business Name]?",
+            body: `Hi [Name],
 
-Saw your content — the online coaching / programme side looks like it could be doing a lot more. Right now if someone wants to buy in, they have to DM you or figure it out themselves. That friction loses sales.
+I saw [Business Name] is listed on delivery apps. While those apps bring volume, they take up to 30% of your hard-earned margin on every single order.
 
-A proper website with a clean programme page, testimonials, and a way to sign up changes that completely.
+If you don't offer a direct ordering portal on your own website, you are missing out on customers who want to order directly from you and support local.
 
-We're Driftveil Labs. We build these for coaches and trainers. Fast, custom, no Linktree nonsense.
+We build direct, zero-commission ordering systems built straight into a lightning-fast site for takeaways in [Area]. You keep every cent.
 
-10 minutes to show you what we've done?
+Worth a quick 15 minutes?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Save fees",
+            body: `Hi [Name], we build direct ordering systems for takeaways like [Business Name] to bypass the 30% delivery app fees. Worth a quick chat to see how much margin you'd save? [Your name] — driftveillabs.com`
+          }
+        ]
       },
-      {
-        label: "Follow-up — No reply",
-        subject: "Re: your website",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Bakery & Patisserie": {
+        tip: "Custom orders are where bakeries make high-margin profit. Focus on a custom consultation form or order pipeline builder to streamline celebration cakes.",
+        emails: [
+          {
+            label: "Hook — Custom order forms",
+            subject: "Custom cake inquiry process for [Business Name]",
+            body: `Hi [Name],
 
-Dropped you a message last week — just checking it didn't get lost.
+Your patisserie creations at [Business Name] look incredible. I noticed that if someone wants to order a custom cake or a bulk pastry run, they have to navigate back-and-forth emails, calls, or Instagram DMs.
 
-One line version: we build websites for fitness professionals that actually get found on Google. First month is free, no templates, done fast.
+That friction costs you orders. We build stunning visual portfolios with automated, step-by-step cake customization builders. Clients specify size, flavors, and dates, and you get structured orders.
 
-If the timing's off, just say and I'll circle back. If you're curious, 15 minutes is all it takes.
+We're Driftveil Labs. We build these bespoke systems so you can focus on baking.
+
+Can I show you an example of what this looks like?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      }
-    ],
-    whatsapp: [
-      {
-        label: "WhatsApp — Strong Instagram, invisible on Google",
-        body: `Hi [Name], I love the work you're posting on Instagram, but I couldn't find you when I googled [City] personal trainer.
-
-Instagram is great for followers. Google is great for people ready to buy. A website gives you both.
-
-Want to see a quick example?`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Custom cake orders",
+            body: `Hi [Name], love the cakes at [Business Name]! We build custom ordering forms for bakeries to make booking custom orders effortless on mobile. Worth a quick chat?`
+          }
+        ]
       },
-      {
-        label: "WhatsApp — Gym with no website",
-        body: `Hi [Name], I searched for gyms in [Area] and [Gym Name] didn't show up.
+      "Bar & Pub": {
+        tip: "Focus on event updates, happy hours, and space hire features which drive high-value bookings.",
+        emails: [
+          {
+            label: "Hook — Event / Venue Booking",
+            subject: "Private hire bookings at [Business Name]",
+            body: `Hi [Name],
 
-That means people looking to join a gym are landing with someone else. We build gym websites that rank and convert.
+I noticed that [Business Name] hosts events and does private hire, but there is no dedicated landing page on your site detailing room sizes, catering options, and a reservation request engine.
 
-Interested in a quick chat?`
+When local businesses or families in [Area] look for event venues, they search online. If your site doesn't visually sell the space, they look elsewhere.
+
+We build sleek private-hire showcases and events calendars that capture and close high-value reservations.
+
+Can I send you a quick preview concept?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Private hire",
+            body: `Hi [Name], noticed [Business Name] does private event bookings. We design venue pages that pull high-value booking requests on mobile. Interested in a quick 5-min concept?`
+          }
+        ]
       },
-      {
-        label: "WhatsApp — Follow-up",
-        body: `Hi [Name], just circling back on my note about your website.
+      "Catering & Events Food": {
+        tip: "Corporate and large party catering requires instant credibility. A modern portfolio and structured quote calculator turns cold inquiries into contracts.",
+        emails: [
+          {
+            label: "Hook — Corporate Quote Calculator",
+            subject: "Corporate catering inquiries at [Business Name]",
+            body: `Hi [Name],
 
-If you're not interested, no worries. If you are, I can send a short example of a gym site that works well.`
+I checked out the catering services of [Business Name] in [Area]. 
+
+When corporate clients are booking food, they want a seamless way to request quotes based on headcount, dietary requirements, and packages. If your website doesn't make this calculation seamless on mobile, they shift to larger agencies.
+
+We build high-end catering portals with automated inquiry builders that qualify leads before they hit your inbox.
+
+Worth a brief conversation this week?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Catering quotes",
+            body: `Hi [Name], we build high-converting inquiry forms and visual menus for catering companies to convert corporate events in [Area]. Want to see a brief portfolio of our work?`
+          }
+        ]
       }
-    ]
+    }
   },
   {
-    id: "law",
-    label: "Law Firms & Accountants",
-    sub: "Professional services",
-    icon: "⚖",
-    regions: ["lk","my","uk"],
-    tip: "Find them through Google searches for '[city] solicitor' or '[city] accountant'. Look for sites that have a copyright year in the footer from 5+ years ago — that's your hook. Address the senior partner by name if you can find it.",
-    emails: [
-      {
-        label: "Hook — Dated website",
-        subject: "Your website says © 2018. Your clients notice.",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Looked up [Firm Name] — the work you do is clearly serious, but the website doesn't reflect that. The design is dated, it doesn't work well on mobile, and it reads like it was last updated years ago.
-
-For a professional services firm, the website is often the first thing a prospective client sees before they decide whether to pick up the phone. A site that looks old signals exactly the wrong thing.
-
-We build clean, credible websites for law firms and accountancy practices. No stock photos of handshakes. No generic layouts. A site that matches the standard of the firm.
-
-We're Driftveil Labs. Fast, custom, no fluff.
-
-Would a call this week be worth your time?
-
-[Your name]
-
-[Your role]
-
-Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      },
-      {
-        label: "Hook — No website at all",
-        subject: "A firm the size of [Firm Name] should have a website",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Tried to find [Firm Name] online — couldn't find a website anywhere. For a firm handling [legal / financial] matters, that absence costs you credibility before you've even spoken to a prospect.
-
-Word of mouth is powerful but it has a ceiling. A clean, professional website extends your reach beyond referrals.
-
-We build websites for professional firms. Credible, fast to load, designed to convert a visitor into an enquiry.
-
-We're Driftveil Labs. Happy to show you what we've done.
-
-[Your name]
-
-[Your role]
-
-Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      },
-      {
-        label: "Hook — Credibility angle",
-        subject: "Your competitors' websites look more established than yours",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Had a look at a few [law / accounting] firms in [Area] — including [Firm Name]. Compared side by side, your site doesn't hold up against what some of your competitors are presenting. That's not a reflection of the quality of your work, but it is what a new client sees first.
-
-We build websites for professional firms that look the part — clear practice areas, clean bios, proper contact flow. The kind of site that converts a sceptical visitor into a phone call.
-
-We're Driftveil Labs. No templates, custom design, fast delivery.
-
-Worth a conversation?
-
-[Your name]
-
-[Your role]
-
-Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      },
-      {
-        label: "Follow-up — No reply",
-        subject: "Following up — [Firm Name]",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Wanted to follow up on the note I sent last week about your website — just once, I promise I won't keep chasing.
-
-If it's not the right time, completely understood. If you are open to a quick look at what we do, 15 minutes on a call is genuinely all it takes.
-
-[Your name] · Driftveil Labs · info@driftveillabs.com`
-      }
-    ],
-    whatsapp: [
-      {
-        label: "WhatsApp — Dated website",
-        body: `Hi [Name], I noticed [Firm Name]'s website still looks dated and doesn't work smoothly on phones.
-
-That can make a professional firm look less credible before a potential client even calls.
-
-We build modern, professional sites for law firms and accountants. Want a quick example?`
-      },
-      {
-        label: "WhatsApp — No website at all",
-        body: `Hi [Name], I couldn't find a website for [Firm Name]. That can cost you credibility with clients who search before they call.
-
-We build clean, credible websites for firms that make you look established and make contact easy.
-
-Interested in a short example?`
-      },
-      {
-        label: "WhatsApp — Follow-up",
-        body: `Hi [Name], just checking in on my earlier note about [Firm Name]'s website.
-
-If you'd like, I can send a quick example of a firm site that looks more modern and professional.`
-      }
-    ]
-  },
-  {
-    id: "clinic",
-    label: "Clinics & Dental Practices",
-    sub: "Healthcare & medical",
+    id: "Healthcare",
+    label: "Healthcare",
+    sub: "Clinics, GPs & medical",
     icon: "🏥",
-    regions: ["lk","my","uk"],
-    tip: "Patients search on mobile at odd hours — evening and weekend searches dominate for clinics. A site that doesn't load fast on mobile is a genuine business problem. Lead with that specific scenario.",
-    emails: [
-      {
-        label: "Hook — No website or broken mobile",
-        subject: "Someone had a toothache at 10pm and couldn't find you",
-        to: "[Name]",
-        body: `Hi [Name],
+    tip: "Trust is the ultimate currency. Dental and medical clinics need immediate reassurance, clean bios, speed, and simple emergency-hours maps.",
+    subNiches: {
+      "Dental": {
+        tip: "Target dentists who have clunky sites or lack integrated online booking software like Dentally. Highlighting empty calendar space works.",
+        emails: [
+          {
+            label: "Hook — Instant Booking & Patient Trust",
+            subject: "Question about booking patients at [Business Name]",
+            body: `Hi [Name],
 
-Here's a scenario that's probably happened to [Practice Name] more than once: someone's in discomfort at night, they google dentists near them, click your link on their phone — and either nothing loads or it barely works.
+I looked up dental practices in [Area] and came across [Business Name]. I noticed that booking a check-up requires a phone call or filling out a long, non-responsive form.
 
-So they book somewhere else.
+With dental anxiety being common, patients love the convenience of booking directly on mobile outside of work hours.
 
-We build clinic and dental websites that work perfectly on mobile, load fast, and make it immediately clear how to get in touch or book an appointment. Clean, professional, and built for how patients actually search.
+We build modern, secure websites for dental practices that integrate directly with booking calendars, making check-ups effortless.
 
-We're Driftveil Labs. No templates, first month hosting free.
-
-Happy to show you what we've done for other practices.
+Can I show you what we can do for [Business Name]?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Booking dental appointments",
+            body: `Hi [Name], I saw [Business Name] does dental bookings over the phone. We integrate digital booking calendars on clean dental sites to secure more patients. Let me know if you want to see a 3D mock.`
+          }
+        ]
       },
-      {
-        label: "Hook — No online booking",
-        subject: "If patients can't book online, some of them won't book at all",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Veterinary": {
+        tip: "Focus on the emergency booking panic. When a pet is sick, owners need a huge, visible 'Emergency — Call Now' button and instant map coordinates on mobile.",
+        emails: [
+          {
+            label: "Hook — Mobile emergency speed",
+            subject: "Mobile emergency check for [Business Name]",
+            body: `Hi [Name],
 
-Checked out [Practice Name] — looks like booking an appointment means calling during business hours. A growing number of patients, especially younger ones, won't do that. They'll find a clinic that lets them book online.
+In a veterinary emergency, pet owners in [Area] search on their phones in a panic. I looked at [Business Name]'s mobile site and noticed it takes several seconds to load, and your emergency contact number isn't easily clickable at the top.
 
-We add proper online appointment request forms to clinic websites. Simple for patients, manageable for your team.
+That split second is everything for an anxious pet owner.
 
-We're Driftveil Labs. We build healthcare websites that are clean, fast, and actually useful for patients.
+We build highly responsive, veterinary-focused websites that prioritize speed, clickable emergency lines, and clean patient portal links.
 
-Worth a 15-minute call?
+Would you be open to a 10-minute preview of a design concept we have for you?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Vet emergency hook",
+            body: `Hi [Name], we optimize vet practice sites so that panicked pet owners can click-to-call your emergency clinic instantly. Let me know if you want to see our mobile designs.`
+          }
+        ]
       },
-      {
-        label: "Hook — Generic or outdated look",
-        subject: "Your clinic's website doesn't look as good as your clinic",
-        to: "[Name]",
-        body: `Hi [Name],
+      "GP & Medical Clinic": {
+        tip: "A simple, authoritative design is critical here. Highlight secure registration forms and clear doctor profiles.",
+        emails: [
+          {
+            label: "Hook — Patient intake flow",
+            subject: "Patient registration flow at [Business Name]",
+            body: `Hi [Name],
 
-Visited [Practice Name]'s website — I'm sure the actual practice is much better than the website suggests. It looks dated, the photos don't reflect the quality of the space, and it doesn't build the kind of trust a new patient needs before they book.
+I checked out [Business Name] online and wanted to check if you have secure, mobile-friendly forms for new patient registrations.
 
-We rebuild clinic websites from scratch. Professional, clean, and designed to actually reassure a new patient rather than make them second-guess.
+Right now, many clinics in [Area] force patients to download, print, and fill out PDFs, which slows down clinic reception. We build modern clinic sites with secure, digital intake flows that seamlessly update your admin staff.
 
-We're Driftveil Labs. Custom design, fast turnaround, first month free.
+We're Driftveil Labs. We specialize in clean, fast healthcare development.
 
-Happy to send over some examples.
+Worth a brief call?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Digital Intake",
+            body: `Hi [Name], we build medical sites that digitize patient registrations, saving your GP clinic hours of reception paperwork. Would you be open to a quick concept mockup?`
+          }
+        ]
       },
-      {
-        label: "Follow-up — No reply",
-        subject: "Re: [Practice Name]'s website",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Physiotherapy": {
+        tip: "Focus on sports injuries. Pitch a site that allows players/patients to specify their pain area on an interactive symptom checklist to book an initial assessment.",
+        emails: [
+          {
+            label: "Hook — Symptom-to-booking pipeline",
+            subject: "Booking physical therapy clients at [Business Name]",
+            body: `Hi [Name],
 
-Just a quick follow-up on the message I sent a few days ago — I know running a practice is busy and email isn't always top of the list.
+I searched for physical therapy in [Area] and found [Business Name]. I noticed your booking structure relies heavily on general inquiries.
 
-If it's useful, I'm happy to send over a couple of examples of clinic sites we've built so you can see if it's the kind of thing worth exploring.
+When someone has a sports injury or back pain, they want to book a session for their exact problem immediately. We design physio websites with localized symptom selectors that match patients straight to the right therapist.
 
-Either way, no pressure.
+Would you be open to a 10-minute look at how this booking layout functions?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Sports physio booking",
+            body: `Hi [Name], we design physio websites with interactive booking flows that help patients schedule assessments for their specific injuries in under 60 seconds. Let's chat!`
+          }
+        ]
+      },
+      "ENT & Specialist Clinic": {
+        tip: "Clinical trust and referral paths. Your copy should focus on presenting specialists' medical credentials and clean layout profiles.",
+        emails: [
+          {
+            label: "Hook — Specialist referral layout",
+            subject: "Referral pathway presentation for [Business Name]",
+            body: `Hi [Name],
 
-info@driftveillabs.com · driftveillabs.com`
+For a medical specialist clinic like [Business Name], referral pathways are vital. I noticed that your medical credentials, publications, and clinic details aren't as prominent as they could be on mobile.
+
+We design authoritative websites for medical specialists that make it incredibly easy for GPs to refer patients and for visitors to verify clinic expertise.
+
+We would love to show you a clean layout draft.
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Specialist credentials",
+            body: `Hi [Name], we design high-authority websites for medical specialists to establish clinical trust and simplify GP patient referrals. Can I send over a quick draft?`
+          }
+        ]
+      },
+      "Optometry": {
+        tip: "Opticians sell style as well as health. Pitch a visual frame showcase alongside their eye test booking engine.",
+        emails: [
+          {
+            label: "Hook — Booking eye tests + Frame showcase",
+            subject: "Eye test bookings at [Business Name]",
+            body: `Hi [Name],
+
+I searched for optometrists in [Area] and found [Business Name]. While your practice has great reviews, your online presence doesn't showcase the designer frames you have in stock, nor does it let patients schedule eye tests instantly online.
+
+We build websites for local opticians that act as beautiful visual galleries for your optical stock, integrated directly with eye test slot bookings.
+
+Can I show you what a concept looks like for your brand?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Eye test bookings",
+            body: `Hi [Name], we build optometry sites that display your luxury frames and allow clients to schedule eye examinations on their phone. Worth a brief look?`
+          }
+        ]
+      },
+      "Mental Health & Therapy": {
+        tip: "Emphasize absolute security, calm typography, safe-space imagery, and a seamless private booking option.",
+        emails: [
+          {
+            label: "Hook — Safe & Confidential booking",
+            subject: "A confidential online home for [Business Name]",
+            body: `Hi [Name],
+
+I checked out [Business Name] and wanted to reach out. For therapy and counseling practices, the website is the first point of contact for someone seeking a safe, calm environment.
+
+A site that loads slowly or feels clinical can actually prevent someone from taking that first step. We design soothing, elegant, and secure therapy websites that allow clients to request consultations confidentially.
+
+We're Driftveil Labs. We'd love to help you build a safe online space.
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Therapy safe space",
+            body: `Hi [Name], we design calm, professional websites for therapists that build trust and make booking confidential consultations incredibly gentle on clients. Let's chat.`
+          }
+        ]
+      },
+      "Pharmacy": {
+        tip: "Convenience is king. Highlight localized collection notices, repeat prescriptions, and operating hours.",
+        emails: [
+          {
+            label: "Hook — Local prescription pickup info",
+            subject: "Local search presence for [Business Name]",
+            body: `Hi [Name],
+
+When residents in [Area] need an urgent prescription filled or want to check if a local pharmacy is open, they google on the move.
+
+Currently, [Business Name] doesn't have a fast, clear landing page highlighting your opening hours, prescription delivery services, and instant pharmacy click-to-call numbers.
+
+We build simple, vital single-page pharmacy sites that rank locally and keep patients informed.
+
+Worth a 5-minute conversation?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Pharmacy locator",
+            body: `Hi [Name], we build simple mobile-first sites for local pharmacies showing hours, services, and rapid prescription pickup guidelines. Can I show you a concept for [Business Name]?`
+          }
+        ]
       }
-    ],
-    whatsapp: [
-      {
-        label: "WhatsApp — No website or broken mobile",
-        body: `Hi [Name], I searched for clinics near me and [Practice Name] either didn't show up or loaded slowly on mobile.
-
-Patients search on their phones, especially at night. If the site doesn't work, they book somewhere else.
-
-We build clinic websites that load fast and make booking simple. Want to see a quick example?`
-      },
-      {
-        label: "WhatsApp — No online booking",
-        body: `Hi [Name], I saw [Practice Name] still relies on phone calls for booking.
-
-A lot of patients would rather book or enquire online, especially outside office hours.
-
-We add simple appointment booking pages to clinic sites. Want me to send a short example?`
-      },
-      {
-        label: "WhatsApp — Follow-up",
-        body: `Hi [Name], just checking in on my note about [Practice Name]'s website.
-
-If you'd like, I can send over one or two examples of clinic sites that work better for patients.`
-      }
-    ]
+    }
   },
   {
-    id: "retail",
-    label: "Boutique & Independent Retail",
-    sub: "Physical stores, independent shops",
-    icon: "🛍",
-    regions: ["lk","my","uk"],
-    tip: "Find them on Instagram — most boutique retailers have strong IG presence. Their bio email is your target. Mention something specific about their actual products in the opening line. Generic openers get deleted instantly in retail.",
-    emails: [
-      {
-        label: "Hook — Instagram-only, no website",
-        subject: "People are looking for [product type] in [city] and can't find you",
-        to: "[Name]",
-        body: `Hi [Name],
+    id: "Health & Beauty",
+    label: "Health & Beauty",
+    sub: "Salons, spas & fitness",
+    icon: "✂",
+    tip: "Instagram is great for beauty but horrible for bookings. Highlight how many slots they are losing by asking clients to 'DM to book' or look through stories.",
+    subNiches: {
+      "Hair Salon & Barbershop": {
+        tip: "DM bookings are the biggest bottleneck. Offer a dedicated calendar link with automatic SMS/email reminders to eliminate no-shows.",
+        emails: [
+          {
+            label: "Hook — Instagram booking bottleneck",
+            subject: "No-shows and DM booking limits at [Business Name]",
+            body: `Hi [Name],
 
-Found [Store Name] on Instagram — [specific product] looks great. But if someone searches '[product] shop [city]' on Google right now, you're not showing up.
+Your styling work on Instagram at [Business Name] is seriously clean. But I noticed your booking call-to-action is 'DM to book'.
 
-Instagram is great for building an audience. Google is where buyers go when they're ready to buy. Right now you're only getting people who already know you exist.
+Handling bookings in DMs is a massive headache. If a client wants to book a slot at 10 PM on a Sunday, they have to wait for you to reply. Some will give up and go to a salon with a 'Book Now' button.
 
-We build retail websites that actually get found — product showcases, contact, directions, and a way to order or enquire. Custom, not a template. Looks like your brand.
+We build high-converting salon websites with direct booking portals. Clients pick their stylist, select a slot, and put down a card deposit. No back-and-forth, no unpaid no-shows.
 
-We're Driftveil Labs. First month hosting free. No long lock-in.
+10 minutes to show you a design mockup?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — DM bookings bottleneck",
+            body: `Hi [Name], saw your hair styling on IG! We replace 'DM to book' bottlenecks with automated, 24/7 calendar schedulers. Cuts down booking admin by 80%. Worth a look?`
+          }
+        ]
+      },
+      "Nail & Beauty Salon": {
+        tip: "Showcase physical artwork portfolios. Highlight add-ons at checkout (e.g., custom gel art, extensions) to boost average ticket value.",
+        emails: [
+          {
+            label: "Hook — Add-on checkout optimization",
+            subject: "Increasing appointment value at [Business Name]",
+            body: `Hi [Name],
+
+I saw the incredible nail art work you're doing at [Business Name]! 
+
+When clients are booking nail appointments, they love customizing their sessions. We build elegant visual booking sites for nail technicians that let clients select add-on designs (like gel art, extensions, or hand massages) at checkout. It easily boosts average appointment values by 20%.
+
+We're Driftveil Labs. No templates, completely bespoke designs.
+
+Would you like to see a custom concept layout for your brand?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Nail art booking",
+            body: `Hi [Name], your nail art is beautiful! We design booking sites that let clients visually select nail extensions & art packages directly when booking. Boosts average order values. Free demo?`
+          }
+        ]
+      },
+      "Spa & Wellness": {
+        tip: "Gift cards and packages are high margin. Pitch a site that allows users to purchase and email gift certificates directly.",
+        emails: [
+          {
+            label: "Hook — Gift card checkout portal",
+            subject: "Gift card sales page for [Business Name]",
+            body: `Hi [Name],
+
+With wellness and relaxation experiences being prime gifts, spas that make it easy to buy digital vouchers directly on their site capture a massive pool of last-minute gift-shoppers.
+
+I noticed [Business Name] doesn't have an online gift card and voucher purchase system.
+
+We build serene, luxury websites for spas with automated gift voucher delivery systems.
+
+Could we schedule a quick call to show you our work?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Spa vouchers",
+            body: `Hi [Name], we build calm, luxury spa sites that allow customers to buy digital gift certificates instantly on mobile. Perfect for boosting off-season bookings. Let's talk!`
+          }
+        ]
+      },
+      "Tattoo & Piercing": {
+        tip: "Target artists handling bookings in IG DMs or spreadsheets. Pitch an elegant gallery paired with a consultation booking form that accepts secure deposits.",
+        emails: [
+          {
+            label: "Hook — Consultation intake + Deposits",
+            subject: "Custom deposit and booking booking system for [Business Name]",
+            body: `Hi [Name],
+
+I checked out the tattoo work at [Business Name] — incredible detail. I noticed that booking a session requires reaching out on DMs or waiting for booking windows to open.
+
+We build dark-themed, ultra-clean portfolio sites for tattoo studios with structured consultation intake forms. Your clients upload reference images, choose sizing, and pay their deposit directly, keeping your calendar solid.
+
+Would you be open to checking out a quick mock layout?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Tattoo deposit booking",
+            body: `Hi [Name], we build custom tattoo portfolio sites with structured intake forms that handle client reference images and secure calendar deposits automatically. Worth a quick look?`
+          }
+        ]
+      },
+      "Personal Trainer & Gym": {
+        tip: "Focus on transformation stories. Offer a site that has high-converting intake question flows ('What is your goal?') that leads directly into a PT booking.",
+        emails: [
+          {
+            label: "Hook — Transformational intake pipeline",
+            subject: "Client conversion landing page for [Business Name]",
+            body: `Hi [Name],
+
+I noticed your fitness brand at [Business Name] is growing, but you don't have a dedicated site showcasing your client success stories and hosting structured intake questionnaires.
+
+When someone in [Area] wants a personal trainer, they need social proof and a simple route to get started. A simple Linktree doesn't convey authority.
+
+We build fitness websites featuring client transformation galleries and high-converting 'Goal Setter' assessment steps that pull warm leads.
+
+Can I show you what this would look like for you?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — PT lead generation",
+            body: `Hi [Name], we build personal training websites featuring goal-setting intake forms and transformation sliders that turn Instagram followers into paid training packages. Want to see a concept?`
+          }
+        ]
+      }
+    }
+  },
+  {
+    id: "Trades",
+    label: "Trades",
+    sub: "Plumbing, electrical, builders",
+    icon: "🔧",
+    tip: "Emergency and high-ticket service bookings occur on mobile. Tradespeople don't need fancy animations; they need click-to-call, service areas, and fast quote request forms.",
+    subNiches: {
+      "Electrical": {
+        tip: "Pitch an immediate, bright floating 'Emergency Electrician — Call Now' button that displays their coverage zone clearly on mobile.",
+        emails: [
+          {
+            label: "Hook — Emergency mobile booking",
+            subject: "Capturing emergency callouts in [Area] for [Business Name]",
+            body: `Hi [Name],
+
+When a homeowner or business in [Area] loses power, they search on Google Maps in a panic. If [Business Name] doesn't have a rapid-loading mobile site with an immediate, glowing click-to-call emergency button, they move to the next sparky on the list.
+
+We design clean, high-speed websites for local electricians that highlight your emergency availability and service areas.
+
+We're Driftveil Labs. No complex setup, we handle the hosting.
+
+Can I show you a 5-minute mockup of a high-converting trades landing page?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Electrician callouts",
+            body: `Hi [Name], we build clean, fast electrician sites designed to pull emergency callout jobs in [Area] with prominent mobile click-to-call buttons. Worth a brief look at some layouts?`
+          }
+        ]
+      },
+      "Plumbing & Heating": {
+        tip: "Target boiler service and local heating callouts. Pitch an automated booking calendar for annual boiler check-ups.",
+        emails: [
+          {
+            label: "Hook — Boiler service bookings",
+            subject: "Automating boiler and plumbing bookings for [Business Name]",
+            body: `Hi [Name],
+
+Annual boiler services are steady income, but chasing customers to book their slots is a hassle.
+
+We build plumber and heating websites in [Area] featuring direct calendar schedulers. Customers choose their date, specify the boiler model, and secure the booking, saving you hours of phone admin while you're out on-site.
+
+Can we send over a quick layout demo?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Plumber bookings",
+            body: `Hi [Name], we build professional plumber sites featuring automated booking systems for annual boiler servicing and callouts. Helps you book jobs while on the tools. Worth a quick look?`
+          }
+        ]
+      },
+      "Pest Control": {
+        tip: "Discretion and urgency. Pitch a clean, professional emergency form that guarantees discreet, rapid responses for anxious families.",
+        emails: [
+          {
+            label: "Hook — Discreet Quote forms",
+            subject: "Urgent quote lead capture for [Business Name]",
+            body: `Hi [Name],
+
+Pest issues require immediate, discreet solutions. When homeowners face this, they want an online form that guarantees rapid, private responses.
+
+If [Business Name]'s site is slow or hard to navigate on mobile, they will go to whichever local team has a fast, reassuring contact flow.
+
+We design high-converting pest control landing pages with rapid response fields and service area coverage maps.
+
+Can I show you an interactive preview?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Pest control leads",
+            body: `Hi [Name], we build local pest control sites that rank and capture urgent lead requests from families needing immediate help. Let me know if you want to see a layout concept!`
+          }
+        ]
+      },
+      "Landscaping & Gardening": {
+        tip: "High visual impact. Show off a gorgeous portfolio of before/after project sliders and a quote form for seasonal upkeep contracts.",
+        emails: [
+          {
+            label: "Hook — Visual project portfolio sliders",
+            subject: "Before & after showcase for [Business Name]",
+            body: `Hi [Name],
+
+Your landscaping and design work deserves to be presented on a premium digital stage. Right now, your online presence doesn't fully capture the high standard of your physical transformations.
+
+We build gorgeous landscaping websites featuring interactive before-and-after project sliders, and professional quote estimators for residential estates in [Area].
+
+Would you like to see how we can visually package [Business Name]'s projects?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Landscaping portfolios",
+            body: `Hi [Name], we build high-end landscaping websites with interactive before/after transformation galleries to capture premium residential contracts. Let's chat!`
+          }
+        ]
+      },
+      "Cleaning": {
+        tip: "Flat-rate price estimation. Pitch an online quote estimator where homeowners select bedrooms/bathrooms to book cleaners automatically.",
+        emails: [
+          {
+            label: "Hook — Flat-rate booking calculator",
+            subject: "Booking automation for [Business Name]",
+            body: `Hi [Name],
+
+I checked out [Business Name] online. In the domestic and commercial cleaning industry, clients love immediate pricing.
+
+We build cleaning service websites featuring interactive checkout calculators. Visitors select their house size, choose recurring dates, and secure their cleaners instantly.
+
+Would you be open to seeing a quick concept layout?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Cleaning calculator",
+            body: `Hi [Name], we design cleaning agency sites featuring bedroom-and-bathroom price calculators so clients can book instantly online on mobile. Want a free preview?`
+          }
+        ]
+      },
+      "Security & CCTV": {
+        tip: "Focus on safety and home protection. Pitch a site containing a free residential home security audit request form.",
+        emails: [
+          {
+            label: "Hook — Free security audit pipeline",
+            subject: "Generating security system leads for [Business Name]",
+            body: `Hi [Name],
+
+With smart security and CCTV systems being top-of-mind for homeowners in [Area], a trusted online presence is key to winning high-value installations.
+
+We build professional security agency websites featuring secure audit-request forms that help clients identify potential vulnerabilities, leading directly to a booking with your team.
+
+Can we show you some of our secure trades layouts?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Security installations",
+            body: `Hi [Name], we build security & CCTV installation sites that rank locally in [Area] and capture warm residential security audit leads. Interested in a layout demo?`
+          }
+        ]
+      },
+      "Removal & Storage": {
+        tip: "Volume-to-pricing calculator. Pitch a mobile-friendly site with a volume estimation tool to deliver precise moving quotes fast.",
+        emails: [
+          {
+            label: "Hook — Moving volume calculator",
+            subject: "Capturing moving contracts in [Area] for [Business Name]",
+            body: `Hi [Name],
+
+When moving homes, families want to secure packing and removal services quickly.
+
+We build websites for local removal companies featuring integrated space calculators. Customers tick off their large furniture pieces, and your system calculates volume to deliver a precise quote instantly.
+
+Would you like to see a custom concept layout for your removals business?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Removal quotes",
+            body: `Hi [Name], we build removal agency sites with mobile-friendly quote generators that allow families to estimate moving volume and book slots. Worth a quick chat?`
+          }
+        ]
+      }
+    }
+  },
+  {
+    id: "Agency",
+    label: "Agency / Creative",
+    sub: "Creative & agency studios",
+    icon: "🎨",
+    tip: "Creative professionals must have exceptionally fast portfolios. Slow-loading galleries or generic template frameworks kill brand credibility.",
+    subNiches: {
+      "Photography": {
+        tip: "Showcase raw high-resolution photography without compromising speed. Pitch an elegant layout designed to outperform generic site builders.",
+        emails: [
+          {
+            label: "Hook — Slow-loading image gallery",
+            subject: "Speed check on [Business Name]'s photo portfolio",
+            body: `Hi [Name],
+
+Your photography style is beautiful, but I noticed your portfolio website takes several seconds to display your high-res galleries, especially on mobile.
+
+When creative directors or couples look to book a photographer, slow loading speeds can cause them to close the tab. Standard templates from generic builders aren't optimized for massive image loads.
+
+We hand-build incredibly fast portfolio pages that load raw, high-resolution imagery instantly without losing quality.
+
+Can I send over a quick, ultra-fast draft concept of your site?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Fast photography site",
+            body: `Hi [Name], love your photography style! I noticed your website galleries load slowly on phones. We hand-build portfolio sites optimized for instant high-res loads. Want a quick concept?`
+          }
+        ]
+      },
+      "Videography": {
+        tip: "Focus on embedded showreels and rapid mobile video players. Slow load speeds kill video portfolios.",
+        emails: [
+          {
+            label: "Hook — Mobile showreel optimization",
+            subject: "Showreel video performance at [Business Name]",
+            body: `Hi [Name],
+
+I checked out your videography showreel at [Business Name]. The content looks incredible, but on mobile, video files stutter or load with large black borders.
+
+For a commercial video production team, your website is your calling card. We build high-speed, lightweight videography portfolios that stream your showreels perfectly on any mobile layout.
+
+Would you be open to checking out a fast video concept layout?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Videography showreel",
+            body: `Hi [Name], saw your videography reels! We build rapid, video-optimized portfolio sites that run smoothly on mobile devices. Can I show you a 5-min draft?`
+          }
+        ]
+      },
+      "Marketing Agency": {
+        tip: "Data, authority, and lead capture. Pitch a layout featuring conversion case-studies and a calendar-booking widget.",
+        emails: [
+          {
+            label: "Hook — Authority & Case Study focus",
+            subject: "Case-study and lead pipeline for [Business Name]",
+            body: `Hi [Name],
+
+As a marketing agency, your online layout is the definitive proof of your capabilities. I looked up [Business Name] and saw there's no clear conversion path or case-study gallery showing off your campaign statistics.
+
+We design high-converting agency landing pages with custom metrics showcases and calendar tools that pull high-value marketing client calls.
+
+Would you be open to a quick 10-minute look at our layout frameworks?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Agency leads",
+            body: `Hi [Name], we build authority-driven sites for marketing agencies that present case studies beautifully on mobile and drive discovery calls. Let's chat.`
+          }
+        ]
+      },
+      "Graphic Design Studio": {
+        tip: "Target designers with gorgeous designs but outdated site portfolios. Pitch a clean, minimalist custom web frame.",
+        emails: [
+          {
+            label: "Hook — Minimalist visual architecture",
+            subject: "Portfolio framework check for [Business Name]",
+            body: `Hi [Name],
+
+Your design work is exceptional, but your current website frame feels a bit standard and template-heavy. It doesn't quite convey the level of art you produce.
+
+We build completely hand-coded, minimalist portfolio frames that act as quiet, beautiful galleries for graphic designers and brand studios. No clunky site builders, completely custom.
+
+Can I show you a design layout concept for [Business Name]?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Design portfolio",
+            body: `Hi [Name], your design assets are great. We build completely hand-coded, minimalist web containers that match the high-end quality of your branding projects. Worth a look?`
+          }
+        ]
+      },
+      "Events & Wedding Planning": {
+        tip: "Aesthetic storytelling. Pitch a site containing mood board planning tools and interactive packages lists.",
+        emails: [
+          {
+            label: "Hook — Interactive wedding planner",
+            subject: "Wedding and event lead capture at [Business Name]",
+            body: `Hi [Name],
+
+Planning an event is a massive milestone. When clients are looking to hire a planner in [Area], they want to interact with your packages and wedding style mood boards easily.
+
+We build gorgeous event-planning portals featuring visual package builders and inquiry wizards that capture high-budget celebrations.
 
 Worth a quick chat?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Wedding planner",
+            body: `Hi [Name], we build luxury event-planning websites with interactive style checklists that capture high-ticket wedding bookings on mobile. Ready to see a preview?`
+          }
+        ]
       },
-      {
-        label: "Hook — Bad or generic website",
-        subject: "Your products deserve a better stage than your current website",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Interior Design": {
+        tip: "Spaces are three-dimensional. Pitch interactive layout galleries, mood boards, and initial consult bookings.",
+        emails: [
+          {
+            label: "Hook — Interior design mood-board portfolio",
+            subject: "Design consult pipeline for [Business Name]",
+            body: `Hi [Name],
 
-Checked out [Store Name]'s website — your Instagram has real character, but the website doesn't carry that at all. It looks generic, the photos aren't presented well, and it doesn't make someone want to visit or buy.
+I saw the high-end spaces you design at [Business Name]. 
 
-Your products are the product. The website should sell them, not just list them.
+For an interior designer, client alignment is everything. We build interactive project portfolios featuring high-res space galleries, material mood-boards, and elegant consultation intake sheets that match clients to your exact design style.
 
-We rebuild retail websites from scratch. Designed to reflect the brand, built to convert.
-
-We're Driftveil Labs. Custom, fast, no templates.
-
-Happy to show you what's possible.
+Could I send over a fast mockup layout?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      },
-      {
-        label: "Hook — No e-commerce angle",
-        subject: "Are you selling online yet?",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Came across [Store Name] — great products. Quick question: are you selling online at all, or is it purely walk-in?
-
-If it's walk-in only, you're leaving a significant chunk of potential revenue off the table. A clean product page with a way to order or enquire changes that without the complexity of a full e-commerce build.
-
-We're Driftveil Labs. We build retail sites that look sharp and actually drive sales — not just brochure sites.
-
-Would love to show you what we've done for similar shops.
-
-[Your name]
-
-[Your role]
-
-Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      },
-      {
-        label: "Follow-up — No reply",
-        subject: "Quick follow-up — [Store Name]",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Sent a note a few days ago — just wanted to follow up once.
-
-I know running a shop is a lot. If you ever want to see what a proper website could look like for [Store Name], I can put together a rough concept for free — no strings, just to show you what's possible.
-
-[Your name]
-
-[Your role]
-
-Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Interior design",
+            body: `Hi [Name], we build premium interior design sites featuring interactive project showcases and consultation booking pages for local design studios. Ready for a quick demo?`
+          }
+        ]
       }
-    ],
-    whatsapp: [
-      {
-        label: "WhatsApp — Instagram-only, no website",
-        body: `Hi [Name], I found [Store Name] on Instagram but couldn't find a proper website for it.
-
-When someone is ready to buy, they google first. If you don't show up, they buy from someone else.
-
-We build retail sites that actually get found and look like your brand. Want a quick example?`
-      },
-      {
-        label: "WhatsApp — Bad or generic website",
-        body: `Hi [Name], your products look great on Instagram, but the website doesn't show them off properly.
-
-A better online storefront can make people want to visit or enquire rather than scroll away.
-
-I can send a short example if you're interested.`
-      },
-      {
-        label: "WhatsApp — Follow-up",
-        body: `Hi [Name], just circling back on the note I sent about [Store Name].
-
-If you'd like, I can send over a small example of a retail website that matches your brand.`
-      }
-    ]
+    }
   },
   {
-    id: "photographer",
-    label: "Photographers & Creatives",
-    sub: "Photographers, videographers, designers",
-    icon: "📷",
-    regions: ["lk","my","uk"],
-    tip: "Search '[city] wedding photographer' or '[city] commercial photographer' on Google. The ones that don't appear, or appear with a bad site, are your leads. They're on Instagram — find their email in bio or via their Linktree.",
-    emails: [
-      {
-        label: "Hook — Instagram portfolio only",
-        subject: "Your portfolio is buried inside Instagram's algorithm",
-        to: "[Name]",
-        body: `Hi [Name],
+    id: "Retail",
+    label: "Retail",
+    sub: "Boutique & physical shops",
+    icon: "🛍",
+    tip: "Local retail is battling online e-commerce giants. Target local brick-and-mortar stores and offer click-and-collect or beautiful local inventory showcases.",
+    subNiches: {
+      "Fashion & Clothing": {
+        tip: "Pitch visual lookbooks, localized boutique displays, and a simple local pickup/click-and-collect platform.",
+        emails: [
+          {
+            label: "Hook — Boutique click-and-collect",
+            subject: "Click-and-collect options for [Business Name]",
+            body: `Hi [Name],
 
-Your photography is genuinely strong. But everything you've built is living inside Instagram — which means it only reaches people the algorithm decides to show it to, and disappears from search the moment someone closes the app.
+I saw your fashion collection on Instagram for [Business Name]. The style looks fantastic, but you don't have a fast online boutique to let local buyers secure items for local in-store pickup.
 
-A dedicated portfolio site means your work is findable on Google, presentable to clients who want a proper link, and not subject to what Instagram decides to do tomorrow.
+Local customers love to browse items online before visiting. We build responsive lookbooks and click-and-collect shops that allow clients to reserve items from their smartphones.
 
-We build portfolio sites for photographers. Fast-loading galleries, your bio, contact — your brand, not someone else's platform.
-
-We're Driftveil Labs. Custom design, not Squarespace. Something that actually looks like you.
-
-Want to see a concept?
+Worth a quick look?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Boutique collection",
+            body: `Hi [Name], love your apparel lines! We build rapid boutique mobile catalogs with click-and-collect checkout for local shoppers. Want to see a custom concept layout?`
+          }
+        ]
       },
-      {
-        label: "Hook — Linktree or generic site",
-        subject: "A Linktree is not a portfolio",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Food & Grocery": {
+        tip: "Target local organic or specialty grocers. Offer click-and-collect ordering or dynamic local inventory catalogs.",
+        emails: [
+          {
+            label: "Hook — Local specialty grocer click-and-collect",
+            subject: "Local stock reservations for [Business Name]",
+            body: `Hi [Name],
 
-Clicked the link in your Instagram bio — it goes to a Linktree. For a photographer trying to win clients, that's the equivalent of handing someone a Post-it note instead of a business card.
+I checked out [Business Name]'s specialty grocer listing in [Area]. 
 
-Clients want to see your work presented properly. A Linktree doesn't do that.
+When busy families want to secure fresh, organic, or specialty items, they want to see what is in stock on their phones before driving down. We build easy click-and-collect catalogs for local stores, allowing clients to reserve organic bags instantly.
 
-We build portfolio sites that load fast, look exceptional, and actually show what you can do. The kind of thing you can send to a potential client and know it lands.
-
-We're Driftveil Labs. No templates, custom design, fast turnaround.
-
-10 minutes to show you what we've built?
+Would you be open to seeing a concept?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Grocery reserves",
+            body: `Hi [Name], we build click-and-collect ordering pages for specialty food shops, helping locals reserve fresh stock easily on mobile. Let's chat.`
+          }
+        ]
       },
-      {
-        label: "Hook — Wedding / event photographer",
-        subject: "Couples aren't just checking Instagram before booking a photographer",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Home & Furniture": {
+        tip: "Furniture has massive shipping variables. Pitch a clean showroom direction map and catalog request form.",
+        emails: [
+          {
+            label: "Hook — Showroom direction & catalog finder",
+            subject: "Showroom visit bookings at [Business Name]",
+            body: `Hi [Name],
 
-Couples planning a wedding google photographers, not just scroll Instagram. If [Your Name / Studio Name] doesn't have a proper website, you're invisible to everyone who starts their search on Google — which is most of them.
+Purchasing furniture is a tactile experience. When clients are looking for home furniture in [Area], they want to browse your collections online and easily book an appointment or find directions to your physical showroom.
 
-We build wedding and event photography websites. Galleries by category, a clean about page, a contact form that actually gets replies. The kind of site that books clients.
+We build elegant furniture catalog showcases that display your stock and let customers book showroom consults seamlessly.
 
-We're Driftveil Labs. Custom, fast, first month hosting free.
-
-Would love to show you some examples.
+Can I send over a quick layout mockup?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Furniture showroom",
+            body: `Hi [Name], we build premium furniture catalog sites designed to drive showroom traffic and let clients book private design consults. Interested in a brief preview?`
+          }
+        ]
       },
-      {
-        label: "Follow-up — No reply",
-        subject: "Re: portfolio website",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Sports & Outdoors": {
+        tip: "Target cycling, hiking, or sports equipment stores. Highlight customized fitment and consult appointments.",
+        emails: [
+          {
+            label: "Hook — Gear customization & fitment appointments",
+            subject: "Specialized gear consult bookings for [Business Name]",
+            body: `Hi [Name],
 
-Just following up on the message I sent last week — not trying to be pushy, just don't want it to get lost.
+High-end sports equipment (like bikes, golf clubs, or skis) requires precise setup.
 
-If you're curious what a proper portfolio site could look like for your work, I'm happy to put together a rough mock for free. No commitment, just to see if it's something worth exploring.
+We build websites for local sports shops featuring integrated fitment appointments. Customers book their gear fitting session directly, establishing [Business Name] as the definitive local expert in [Area].
+
+Can I show you what this layout concept looks like?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Outdoor fittings",
+            body: `Hi [Name], we build local sports shop catalogs featuring direct fitment scheduling to drive high-end equipment bookings. Worth a look?`
+          }
+        ]
+      },
+      "Electronics & Tech": {
+        tip: "Focus on stock clarity, trading values, and warranties. Pitch a landing page containing a trade-in value estimator.",
+        emails: [
+          {
+            label: "Hook — Trade-in value estimator",
+            subject: "Generating high-ticket trade-ins for [Business Name]",
+            body: `Hi [Name],
 
-info@driftveillabs.com · driftveillabs.com`
+When customers look for local electronics and phone repair/purchase, they search for rapid valuation.
+
+We build tech retail websites featuring automated trade-in value estimators. Clients input their device specifications and get an estimated value instantly, drawing them straight to [Business Name] in [Area].
+
+Worth a brief call?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Tech trades",
+            body: `Hi [Name], we build tech and repair sites with interactive quote tools for device trade-ins. Pulls consistent walk-in foot traffic. Ready to see a mockup?`
+          }
+        ]
+      },
+      "Pet & Animal Supplies": {
+        tip: "Emphasize community local care, repeat deliveries, and click-and-collect options for local pet owners.",
+        emails: [
+          {
+            label: "Hook — Pet food repeat click-and-collect",
+            subject: "Capturing recurring pet supply customers for [Business Name]",
+            body: `Hi [Name],
+
+Pet food is a constant repeat purchase. Local pet owners in [Area] love secure local pickup sites where they can order pet food bags and pick them up on the way home.
+
+We build simple local pet store catalogs that secure local loyalty through click-and-collect checkout.
+
+Can I show you an active trades/retail concept?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Pet supplies click-and-collect",
+            body: `Hi [Name], we build click-and-collect supply catalogs for local pet shops to keep neighborhood pet owners booking items directly from their mobile phones. Let's talk.`
+          }
+        ]
+      },
+      "Aquatics & Swimming": {
+        tip: "Specialized tanks, coral, and maintenance. Pitch customized aquarium design and cleaning consultation bookings.",
+        emails: [
+          {
+            label: "Hook — Aquarium setup custom quote request",
+            subject: "Aquarium installation leads for [Business Name]",
+            body: `Hi [Name],
+
+Custom aquatic tank setups are high-value installations. I checked out [Business Name] and saw you don't have a visual page designed to capture custom home and corporate aquarium project quote requests.
+
+We build aquatics websites with interactive project galleries and structured intake forms for custom installs.
+
+Worth a brief chat this week?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Aquarium custom installs",
+            body: `Hi [Name], we design premium aquatics sites with installation booking forms to capture high-ticket custom tank builds. Can I show you a layout concept?`
+          }
+        ]
       }
-    ],
-    whatsapp: [
-      {
-        label: "WhatsApp — Instagram portfolio only",
-        body: `Hi [Name], your work looks strong on Instagram, but a portfolio hidden in the app doesn't help people find you.
-
-A dedicated site gives you something to send clients that actually shows your style.
-
-Want to see a quick example?`
-      },
-      {
-        label: "WhatsApp — Linktree or generic site",
-        body: `Hi [Name], I followed the link in your bio and it goes to Linktree.
-
-For a photographer, that doesn't look like a real portfolio. A website does.
-
-I can send a short example if you'd like.`
-      },
-      {
-        label: "WhatsApp — Follow-up",
-        body: `Hi [Name], just checking in on my earlier message about your online portfolio.
-
-If you'd like, I can send a quick example of a photography site that works better than Instagram alone.`
-      }
-    ]
+    }
   },
   {
-    id: "tuition",
-    label: "Tuition & Education",
-    sub: "Tuition centres, tutors, training",
-    icon: "📚",
-    regions: ["lk","my","uk"],
-    tip: "Parents are your real audience, not the tuition centre owner. Frame everything around what a parent needs to see to trust a centre with their child. In Sri Lanka and Malaysia, Facebook groups are where these businesses get found — which means they're invisible on Google.",
-    emails: [
-      {
-        label: "Hook — WhatsApp only, no Google presence",
-        subject: "Parents are googling tutors in [Area] and not finding you",
-        to: "[Name]",
-        body: `Hi [Name],
+    id: "Real estate",
+    label: "Real estate",
+    sub: "Estate agents & letting portals",
+    icon: "🏠",
+    tip: "Word of mouth has a ceiling; local search doesn't. Target local independent agents who lack modern standalone personal sites outside of main listing directories.",
+    subNiches: {
+      "Estate Agent": {
+        tip: "Offer a personal branding portal. Pitch free home-appraisal booking forms to capture home-owner seller leads in [Area].",
+        emails: [
+          {
+            label: "Hook — Home appraisal lead capture",
+            subject: "Generating listing instructions for [Business Name]",
+            body: `Hi [Name],
 
-Searched for tuition in [Area] — [Centre Name] didn't come up. A parent who doesn't already have a recommendation has no way to find you.
+Homeowners looking to sell in [Area] search online first. While directory sites display listings, they don't build trust in you as the local agent.
 
-That parent is looking right now. They're not asking in a Facebook group — they're googling. And they're landing on whoever has a proper website.
+We build bespoke agent websites with interactive 'Free Home Appraisal' calendars. Homeowners book a property valuation directly onto your calendar, feeding you continuous seller listing leads.
 
-We build tuition centre websites. Subjects offered, teacher profiles, schedule, how to enrol — everything a parent needs to make a decision and pick up the phone.
-
-We're Driftveil Labs. Custom design, fast turnaround, first month hosting free.
-
-Worth a conversation?
+Can I show you our high-converting real estate layouts?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Free Home Appraisal capture",
+            body: `Hi [Name], we build estate agent sites featuring interactive home valuation schedulers to pull high-quality seller instruction listings in [Area]. Worth a brief look?`
+          }
+        ]
       },
-      {
-        label: "Hook — Trust and credibility angle",
-        subject: "Parents need to trust you before they call. Does your website help?",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Letting Agency": {
+        tip: "Landlords are the target. Pitch landlord compliance guides and tenancy onboarding flows.",
+        emails: [
+          {
+            label: "Hook — Landlord acquisition pipeline",
+            subject: "Attracting local landlords for [Business Name]",
+            body: `Hi [Name],
 
-When a parent is deciding where to send their child for tuition, trust is everything. They're going to look you up before they call.
+For a letting agency, your warmest leads are landlords seeking reliable tenant management in [Area].
 
-If what they find is a WhatsApp number and a Facebook post, that's not enough. A proper website with teacher profiles, subject breakdowns, and a clear way to enrol makes a huge difference to that first impression.
+We build professional letting agency websites with interactive 'Rental Yield Calculators' and tenant onboarding portals that establish your agency as the most modern option in the region.
 
-We build tuition centre websites designed to convert a sceptical parent into an enquiry.
-
-We're Driftveil Labs. No templates, no fluff.
-
-Happy to show you what we've built for similar centres.
+Can we send over a brief dashboard demo concept?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Landlord yields",
+            body: `Hi [Name], we build letting agency sites featuring rental yield estimators and digital onboarding to attract local landlords. Let me know if you want to see a demo.`
+          }
+        ]
       },
-      {
-        label: "Hook — Individual tutor, no site",
-        subject: "You're a good tutor. Does your online presence say that?",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Property Management": {
+        tip: "Emphasize digital maintenance logs and portfolio oversight, proving you protect landlords' assets.",
+        emails: [
+          {
+            label: "Hook — Seamless management portal",
+            subject: "Property management efficiency at [Business Name]",
+            body: `Hi [Name],
 
-Found you through [Platform / Facebook / Recommendation] — clearly experienced in [subject]. But if a parent googles you before reaching out, there's nothing there to back that up.
+I saw the property portfolios managed by [Business Name]. 
 
-A simple personal website — your background, subjects, how to get in touch — changes that completely. It's the difference between someone taking a chance on you and someone feeling confident.
+Modern property owners expect seamless maintenance updates and secure compliance logging. We design professional property management sites featuring integrated maintenance ticketing structures, proving you offer the most organized care in [Area].
 
-We build exactly this for tutors and educators. Clean, fast, professional.
-
-We're Driftveil Labs. Affordable, no templates, quick to deliver.
-
-Worth a chat?
+Would you be open to a 10-minute preview layout walk-through?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      },
-      {
-        label: "Follow-up — No reply",
-        subject: "Re: [Centre Name] website",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Just a quick follow-up on my message from last week — wanted to check it didn't get missed.
-
-One thing that might be useful: I can put together a rough look at what a website for [Centre Name] could look like, completely free, just so you can see if it's worth exploring before committing to anything.
-
-Let me know if that's of interest.
-
-[Your name]
-
-[Your role]
-
-Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Property ticketing",
+            body: `Hi [Name], we design property management sites with tenant ticketing pipelines and compliance checklists to attract high-value landlords. Want a quick mockup?`
+          }
+        ]
       }
-    ],
-    whatsapp: [
-      {
-        label: "WhatsApp — WhatsApp only, no Google presence",
-        body: `Hi [Name], I found [Centre Name] on WhatsApp/Facebook but not on Google.
-
-Parents are googling tuition and tutors in [Area], and if you don't show up, they go to someone else.
-
-We build tuition websites that bring you into search. Want a quick example?`
-      },
-      {
-        label: "WhatsApp — Trust and credibility angle",
-        body: `Hi [Name], parents want to trust a tutor before they call.
-
-If the only thing they can find is a WhatsApp number, that's not enough. A simple site gives you credibility.
-
-I can send a quick example if you're interested.`
-      },
-      {
-        label: "WhatsApp — Follow-up",
-        body: `Hi [Name], just checking in on my note about [Centre Name].
-
-If you'd like, I can send over a short idea for a website that helps parents decide faster.`
-      }
-    ]
+    }
   },
   {
-    id: "contractor",
-    label: "Contractors & Tradespeople",
-    sub: "Plumbers, electricians, builders",
-    icon: "🔧",
-    regions: ["lk","my","uk"],
-    tip: "Find them through Facebook local groups, Google Maps listings with no website, or local directory sites. Many list a mobile number and nothing else. The angle is simple: word of mouth has a ceiling, Google doesn't.",
-    emails: [
-      {
-        label: "Hook — Word of mouth only",
-        subject: "Word of mouth is great. Until it isn't.",
-        to: "[Name]",
-        body: `Hi [Name],
+    id: "Property dev",
+    label: "Property dev",
+    sub: "Construction & development",
+    icon: "🏗",
+    tip: "Property development requires heavy trust. High-resolution project timelines, past builds galleries, and clear contact links turn developers into active tenders.",
+    subNiches: {
+      "Construction & Building": {
+        tip: "Focus on commercial tenders. Pitch a site showing previous developments, team credentials, and safety ratings.",
+        emails: [
+          {
+            label: "Hook — Commercial tender portfolio",
+            subject: "Project presentation check for [Business Name]",
+            body: `Hi [Name],
 
-Most [plumbers / electricians / builders] in [Area] rely entirely on referrals. It works — until work slows down and there's nothing pulling in new jobs.
+When municipal or commercial clients are awarding building tenders in [Area], they verify your credentials, past project galleries, and safety metrics online.
 
-A simple website means when someone in [Area] searches for a [tradesperson] at 9pm because something's gone wrong, you're the one they find. Not just who their neighbour happened to mention.
+If your site is slow or outdated, it impacts your bidding credibility. We build heavy-duty, clean construction websites with secure project galleries and tender submission links.
 
-We build no-nonsense websites for tradespeople. Your services, your coverage area, how to call or message you. Fast, professional, easy to find on Google.
-
-We're Driftveil Labs. First month hosting free, quick to set up.
-
-Worth 10 minutes?
+Would you be open to a quick concept layout check?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Construction portfolios",
+            body: `Hi [Name], we build premium construction websites featuring structured project galleries and tender pipelines to help secure development bids in [Area]. Worth a brief check?`
+          }
+        ]
       },
-      {
-        label: "Hook — Urgency-based search angle",
-        subject: "When someone's pipe bursts, they google. Are you there?",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Architecture & Design": {
+        tip: "Highly architectural layouts. Pitch a clean, minimalist design optimized for large CAD blueprints and 3D renders.",
+        emails: [
+          {
+            label: "Hook — Architectural blueprint portfolio",
+            subject: "Visual portfolio framework for [Business Name]",
+            body: `Hi [Name],
 
-When someone has an emergency — burst pipe, electrical fault, roof issue — the first thing they do is google '[trade] near me'. Not ask friends, not check Facebook. Google.
+Your architectural projects deserve an outstanding digital display. Standard templates often compress high-definition 3D renders and blueprints, reducing their impact on prospective clients.
 
-If [Business Name] isn't showing up, those jobs go to someone else. And they're exactly the kind of high-urgency, willing-to-pay jobs you want.
+We build completely hand-coded, high-performance architecture websites that render massive plans and project galleries instantly on mobile without losing resolution.
 
-A simple, fast website with your services and a clear way to contact you is all it takes to capture those searches.
-
-We're Driftveil Labs. We build clean, search-friendly websites for tradespeople. First month free.
-
-Is it worth a quick chat?
+Can I show you what a layout draft looks like?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Architecture showcases",
+            body: `Hi [Name], we design high-end architectural portfolio sites optimized for instant, pristine rendering of blueprints and 3D mockups on mobile. Want to see a concept?`
+          }
+        ]
       },
-      {
-        label: "Hook — Looks unestablished without a site",
-        subject: "A professional tradesperson should have more than a Facebook page",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Renovation & Fit-out": {
+        tip: "Focus on corporate and residential transformations. Pitch before-and-after interactive slider widgets.",
+        emails: [
+          {
+            label: "Hook — Office/Home transformation sliders",
+            subject: "Before & after project portal for [Business Name]",
+            body: `Hi [Name],
 
-Looked up [Business Name] — found a Facebook page, but no website. For a client comparing a few contractors before they decide who to hire, that can be the difference between choosing you and choosing someone who looks more established online.
+I saw the office and home transformations you build at [Business Name]. 
 
-The work speaks for itself — but only if people can find it and trust you enough to make contact.
+For renovation and fit-out teams, nothing sells your work better than clear before-and-after visuals. We build sleek websites featuring interactive transformation sliders and rapid cost calculators for corporate and residential renovations in [Area].
 
-We build websites for contractors. Photos of your work, your services, reviews, a simple contact button. The kind of page that converts a browser into a call.
-
-We're Driftveil Labs. No templates, fast setup, first month free.
+Can I send you a quick preview layout concept?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Renovation sliders",
+            body: `Hi [Name], we build renovation and fit-out sites with interactive before/after sliders that help secure high-value commercial remodeling jobs in [Area]. Ready to check a demo?`
+          }
+        ]
       },
-      {
-        label: "Follow-up — No reply",
-        subject: "Re: website for [Business Name]",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Solar & Energy": {
+        tip: "Energy savings calculator. Pitch a landing page containing a government rebate and solar savings calculator.",
+        emails: [
+          {
+            label: "Hook — Solar savings calculator",
+            subject: "Generating qualified solar leads for [Business Name]",
+            body: `Hi [Name],
 
-Just following up on the message I sent last week — keeping it short.
+With rising electricity rates in [Area], families and businesses are searching for solar solutions.
 
-If you're not interested, totally fine — just say and I won't bother you again. If you are curious, even 10 minutes on a call is enough to show you what we do.
+We build clean solar installation websites featuring instant solar savings estimators. Prospects enter their average power bill and get their exact payback timeline, converting raw traffic into qualified installation leads.
+
+Would you be open to seeing a quick concept layout?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Solar savings",
+            body: `Hi [Name], we build solar installation landing pages with built-in energy savings calculators that capture highly qualified local solar leads. Ready to see a layout concept?`
+          }
+        ]
       }
-    ],
-    whatsapp: [
-      {
-        label: "WhatsApp — Word of mouth only",
-        body: `Hi [Name], a lot of [plumbers/electricians/builders] still rely on referrals.
-
-That's fine until the work slows down. A simple website makes sure people searching on Google can still find you when they need help.
-
-Want to see a quick example?`
-      },
-      {
-        label: "WhatsApp — Urgency-based search angle",
-        body: `Hi [Name], when someone has an emergency, they google '[trade] near me'. If [Business Name] isn't showing up, that job goes to someone else.
-
-We build simple websites for tradespeople that capture those searches.
-
-Interested in a quick chat?`
-      },
-      {
-        label: "WhatsApp — Follow-up",
-        body: `Hi [Name], just checking the message I sent about your website.
-
-If you'd like, I can send a short example of a trades website that looks professional and works on mobile.`
-      }
-    ]
+    }
   },
   {
-    id: "realestate",
-    label: "Real Estate & Property",
-    sub: "Agents, developers, lettings",
-    icon: "🏘",
-    regions: ["lk","my","uk"],
-    tip: "Independent agents are the target — not the big chains. In Sri Lanka, look for individual property brokers advertising on sites like ikman.lk but with no website of their own. In Malaysia, PropertyGuru agents often have no standalone site.",
-    emails: [
-      {
-        label: "Hook — Independent agent, no site",
-        subject: "Buyers google before they call. What do they find when they google you?",
-        to: "[Name]",
-        body: `Hi [Name],
+    id: "Professional",
+    label: "Professional",
+    sub: "Law firms & financial advisory",
+    icon: "⚖",
+    tip: "Trust, credibility, and security are non-negotiable. Pitch clean bio layouts, practice areas, and secure consult forms without generic stock photos of handshakes.",
+    subNiches: {
+      "Law Firm": {
+        tip: "Highlight trust and easy consultation booking. Pitch separate practice-area pages (family, corporate) to build local SEO.",
+        emails: [
+          {
+            label: "Hook — Credible Practice Area SEO",
+            subject: "Reviewing [Business Name]'s digital credibility in [Area]",
+            body: `Hi [Name],
 
-Most buyers and renters do their research before they ever make contact with an agent. They google the person's name, look for reviews, check their listings. If [Your Name / Agency] doesn't have a proper website, you're asking them to trust someone with no digital footprint.
+When a prospective client is looking to hire legal counsel in [Area], they look for immediate credibility and specialized practice areas on your site.
 
-We build websites for independent agents and small agencies. Current listings, your bio, client testimonials, contact. Clean, professional, and actually findable on Google.
+If [Business Name]'s website is hard to navigate on mobile or relies on generic stock photos, it dilutes the high standard of your firm. We build pristine, authoritative law firm websites with dedicated practice-area pages and secure consultation request forms.
 
-We're Driftveil Labs. Custom, fast, first month free.
+We're Driftveil Labs. No templates, fully custom coded.
 
-Worth a conversation this week?
+Can I show you a layout mockup?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Law firm trust",
+            body: `Hi [Name], we build high-authority sites for law firms that display practice areas clearly on mobile and simplify scheduling consultations. Worth a brief look at some layouts?`
+          }
+        ]
       },
-      {
-        label: "Hook — Looks less credible than competitors",
-        subject: "Your competitors have a website. You don't.",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Accountancy": {
+        tip: "Tax season panic. Pitch an annual tax filing countdown and self-assessment onboarding wizard.",
+        emails: [
+          {
+            label: "Hook — Tax season onboarding pipeline",
+            subject: "Automating onboarding for [Business Name]",
+            body: `Hi [Name],
 
-Looked at a few agents in [Area] — [Agency Name] was the only one without a proper website. When a potential client is comparing agents, that gap matters.
+Tax deadlines are a massive administrative burden for accounting practices in [Area].
 
-It's not about having the fanciest site. It's about having something that makes you look like a legitimate, established professional.
+We build clean, responsive accountant websites featuring digital onboarding forms and file-upload slots. Your clients submit their corporate papers and self-assessments securely online, eliminating manual paper chasing.
 
-We build property websites that do exactly that. Listings, your background, how to get in touch. Built to make the right first impression.
-
-We're Driftveil Labs. No templates, custom design, quick to deliver.
+Can we send over a brief dashboard demo?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Accountant onboarding",
+            body: `Hi [Name], we build accounting websites with built-in client file upload slots and digital onboarding forms to streamline your tax season workflows. Ready to see a mockup?`
+          }
+        ]
       },
-      {
-        label: "Hook — Property developer, no project page",
-        subject: "Where do buyers go to learn more about [Project Name]?",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Financial Advisory": {
+        tip: "Calculators and retirement goals. Pitch a landing page containing custom retirement calculation widgets.",
+        emails: [
+          {
+            label: "Hook — Retirement goal scheduler",
+            subject: "Financial lead capture for [Business Name]",
+            body: `Hi [Name],
 
-Came across [Project / Development Name] — looks like a strong project. But when I tried to find more details online, there wasn't a dedicated page anywhere.
+Prospective clients looking for wealth and retirement advisory in [Area] look for immediate clarity and secure planning.
 
-For a buyer doing their research before committing, 'no website' means 'I'll look at the next project'. A clean project page with specs, photos, pricing guide, and a contact form removes that friction entirely.
+We build professional financial advisory websites with custom calculators and goal-setting intake panels that guide visitors to book a meeting directly onto your calendar.
 
-We build property and development websites. Fast, professional, designed to convert interest into enquiries.
-
-We're Driftveil Labs. Happy to show you examples.
+Would you be open to a brief call to see some secure professional layouts?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Wealth consults",
+            body: `Hi [Name], we design premium wealth advisory sites with security-focused goal estimators to draw in high-net-worth local advisory accounts. Let's chat.`
+          }
+        ]
       },
-      {
-        label: "Follow-up — No reply",
-        subject: "Re: [Agency Name] website",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Consultancy": {
+        tip: "Expert authority. Pitch an integrated case study showcase and consultation booker.",
+        emails: [
+          {
+            label: "Hook — Executive consultation bookings",
+            subject: "Expert positioning page for [Business Name]",
+            body: `Hi [Name],
 
-Following up on the note I sent last week — just the once, I won't keep chasing.
+For specialized consultancies like [Business Name], your personal authority is what drives bookings.
 
-If the timing isn't right, no problem. If you'd like to see what a website for [Agency Name] could look like before deciding, I'm happy to put together a rough concept for free.
+We hand-build elegant consulting portfolios that present your past case studies, executive credentials, and schedule consultation requests in under three clicks.
+
+Worth a brief conversation this week?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Consulting leads",
+            body: `Hi [Name], we build clean, authority-driven sites for expert consultants to present key case studies and schedule initial consultation calls. Can I show you a concept?`
+          }
+        ]
       }
-    ],
-    whatsapp: [
-      {
-        label: "WhatsApp — Independent agent, no site",
-        body: `Hi [Name], I couldn't find a website for [Your Name / Agency]. Buyers and renters expect one before they reach out.
-
-We build property websites for agents that show listings, testimonials, and contact information clearly.
-
-Want a quick example?`
-      },
-      {
-        label: "WhatsApp — Looks less credible than competitors",
-        body: `Hi [Name], I looked at agents in [Area] and noticed [Agency Name] is the only one without a proper site.
-
-That can make you look less established even if your service is strong.
-
-I can send a short example if you're interested.`
-      },
-      {
-        label: "WhatsApp — Follow-up",
-        body: `Hi [Name], just checking in on my earlier note about [Agency Name].
-
-If you'd like, I can send a quick example of a property site that helps build trust.`
-      }
-    ]
+    }
   },
   {
-    id: "warm",
-    label: "Warm Outreach",
-    sub: "Referrals & known contacts",
-    icon: "🤝",
-    regions: ["lk","my","uk"],
-    tip: "Name the mutual contact in both the subject line and first line — it's the single biggest thing you can do to get a warm email opened and replied to. Keep it short. They're already half-sold.",
-    emails: [
-      {
-        label: "Warm — Referral, mutual contact",
-        subject: "[Mutual contact] said to reach out",
-        to: "[Name]",
-        body: `Hi [Name],
+    id: "Education",
+    label: "Education",
+    sub: "Academies, tutors & driving schools",
+    icon: "🎓",
+    tip: "Parents make the purchasing decision. Highlight class timetables, teacher certifications, student outcomes, and simple term booking forms.",
+    subNiches: {
+      "Swimming Academy": {
+        tip: "Focus on child safety and class limits. Pitch a clean timetable booking interface for swimming lessons.",
+        emails: [
+          {
+            label: "Hook — Swimming class term scheduler",
+            subject: "Timetable and class bookings at [Business Name]",
+            body: `Hi [Name],
 
-[Mutual contact] suggested I get in touch — mentioned you've been thinking about getting a proper website sorted for [Business Name].
+I searched for swimming lessons for kids in [Area] and found [Business Name]. I noticed that booking a trial or signing up for a term requires downloading registration forms or calling your desk.
 
-We're Driftveil Labs. We build fully custom websites from scratch — no templates, no builders, everything hand-built. The kind of site that makes your business look exactly like what it is.
+Parents are incredibly busy and prefer to see class timetables, trainer certifications, and secure slots directly on their mobile phones.
 
-I'll keep it short: 15 minutes on a call and I can show you a few things we've built and hear what you're after. No pressure, no pitch.
+We build swimming academy websites with automated booking and term enrollment schedulers.
 
-When works for you?
-
-[Your name]
-
-[Your role]
-
-Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
-      },
-      {
-        label: "Warm — Post-meeting follow-up",
-        subject: "Good to meet you — the website",
-        to: "[Name]",
-        body: `Hi [Name],
-
-Good to meet you [yesterday / recently / at the event]. Wanted to follow up properly rather than leave it at 'I'll send something'.
-
-We're Driftveil Labs — we build custom websites, fully hand-coded, no templates. Everything from the design through to going live is handled by us.
-
-I'll send over a couple of examples this week so you can see the kind of work we do. If it looks like a fit, we hop on a call and go from there.
+Can I show you what a mobile concept looks like for [Business Name]?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Swimming school enrollment",
+            body: `Hi [Name], we build swimming school sites with interactive class schedules to let parents register kids instantly for terms. Cuts out reception desk calls. Worth a brief look?`
+          }
+        ]
       },
-      {
-        label: "Warm — You know them personally",
-        subject: "Wanted to mention what we're building",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Martial Arts & Sports Academy": {
+        tip: "Lead generation through trial sessions. Pitch a mobile checkout designed to sell 'Introductory Passes' or free first sessions.",
+        emails: [
+          {
+            label: "Hook — Trial Pass lead generator",
+            subject: "Generating academy trial signups for [Business Name]",
+            body: `Hi [Name],
 
-Hope you're well — haven't spoken in a while.
+For sports and martial arts academies, the highest-converting funnel is getting people through the door with an Introductory Pass.
 
-I wanted to mention something we've been working on: we started a web studio called Driftveil Labs. We build custom websites for businesses — fully hand-coded, no templates, the whole thing built to actually perform.
+We build sleek sports academy websites with direct checkout forms for 3-class trial passes and age group lists, making onboarding seamless for local families in [Area].
 
-Thought of you because of [Business Name] — if a website is something you've been thinking about or putting off, I'd love to show you what we've been doing. No sales pitch, just a look.
-
-Let me know if you're curious.
+Would you like to see our academy layouts?
 
 [Your name]
-
 [Your role]
-
 Driftveil Labs
-
-info@driftveillabs.com · driftveillabs.com`
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Dojo signups",
+            body: `Hi [Name], we design sports academy sites with simple trial pass registration pages to capture consistent student signups. Let's talk!`
+          }
+        ]
       },
-      {
-        label: "Warm — Family / close network",
-        subject: "Can you help spread the word?",
-        to: "[Name]",
-        body: `Hi [Name],
+      "Tutoring & Education Centre": {
+        tip: "Focus on academic improvement metrics, class timetables, and parents' confidence.",
+        emails: [
+          {
+            label: "Hook — Grade improvement metrics",
+            subject: "Attracting parents in [Area] to [Business Name]",
+            body: `Hi [Name],
 
-Hope everything's good with you.
+When parents look for local tutoring for their children in [Area], they look for academic credentials, class schedules, and success metrics.
 
-I've just launched a web design studio with a few friends — we're called Driftveil Labs. We build custom websites for businesses, and we're looking for our first few clients.
+We build tutoring center websites featuring clear tutor bios, grade improvement charts, and simple consultation booking forms that convert anxious parents into recurring enrollments.
 
-I'm not asking you to commit to anything — I just thought if you know anyone who's been needing a website sorted, or a business that has a terrible one, you might think of us. A referral or even just mentioning our name would mean a lot right now.
+Can I show you a 5-minute preview concept?
 
-If you want to see what we do, happy to show you — our email is info@driftveillabs.com.
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Tutor intake",
+            body: `Hi [Name], we build tutoring center sites showing off teacher profiles and student success metrics to capture parent enrollments on mobile. Ready for a demo?`
+          }
+        ]
+      },
+      "Driving School": {
+        tip: "Instructor diaries. Pitch a site containing dynamic instructor calendar bookings and driving lesson package checkouts.",
+        emails: [
+          {
+            label: "Hook — Instructor diary sync",
+            subject: "Lesson bookings and block bookings for [Business Name]",
+            body: `Hi [Name],
 
-Thanks so much.
+Chasing students to organize driving slots takes hours of admin time.
 
-[Your name]`
+We build websites for local driving schools featuring dynamic instructor diaries. Students purchase a block-booking package and schedule their lessons online based on instructor slots.
+
+Would you be open to checking out a dynamic booking concept layout?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Driving lesson scheduler",
+            body: `Hi [Name], we build driving school sites with integrated instructor calendars to let students book lesson slots online. Cuts down admin by 90%. Let's talk.`
+          }
+        ]
+      },
+      "Music & Arts School": {
+        tip: "Trial lesson scheduling. Pitch a landing page designed to schedule initial instrument trial sessions.",
+        emails: [
+          {
+            label: "Hook — Instrument trial scheduler",
+            subject: "Student enrollment landing page for [Business Name]",
+            body: `Hi [Name],
+
+I checked out [Business Name]'s music classes. 
+
+To turn casual interest into recurring lesson fees, parents need an instant way to book a trial lesson for their child's chosen instrument. We design gorgeous music and art school websites featuring visual instrument selectors and trial slot schedulers.
+
+Worth a brief call to see some creative layouts?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Music lessons",
+            body: `Hi [Name], we build music school sites with visual instruments list and trial session calendars to secure recurring student enrollments. Ready to see a mockup?`
+          }
+        ]
       }
-    ],
-    whatsapp: [
-      {
-        label: "WhatsApp — Referral intro",
-        body: `Hi [Name], [Mutual contact] suggested I reach out about [Business Name].
+    }
+  },
+  {
+    id: "Care",
+    label: "Care",
+    sub: "Home care & nurseries",
+    icon: "🤲",
+    tip: "Anxious families need ultimate reassurance. Highlight qualifications, safety certifications, caregiver vetting, and clean tour booking layouts.",
+    subNiches: {
+      "Home Care": {
+        tip: "Personalized care plans. Pitch an interactive 'Care Consultation' booker to schedule structured initial family meetings.",
+        emails: [
+          {
+            label: "Hook — Trust-focused home care plan bookings",
+            subject: "Family care consult scheduler for [Business Name]",
+            body: `Hi [Name],
 
-We build custom websites for small businesses — clean, fast, and made to convert.
+When families are researching home care support in [Area], they look for high trust, certified caregiver backgrounds, and safe-to-use communication.
 
-If you want, I can send a quick example of what we do.`
+We build high-trust websites for home care providers featuring caregiver bio cards, security standards, and smooth online consultation scheduling.
+
+Would you be open to seeing a concept layout built to convey ultimate family confidence?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Home care trust",
+            body: `Hi [Name], we design high-trust websites for local home care agencies to build family confidence and simplify booking initial care assessments on mobile. Can we connect?`
+          }
+        ]
       },
-      {
-        label: "WhatsApp — Post-meeting follow-up",
-        body: `Hi [Name], good to connect recently.
+      "Care Home": {
+        tip: "Interactive tours. Pitch a landing page showcasing facilities, room availability, and scheduling private family visits.",
+        emails: [
+          {
+            label: "Hook — Facility tour bookings",
+            subject: "Private facility tour scheduler for [Business Name]",
+            body: `Hi [Name],
 
-I wanted to follow up properly with a quick note: we build custom websites for businesses, fully hand-coded, no templates.
+Deciding on a residential care home is a deeply personal step. Families want to explore care facilities, check room availability, and book physical tours online with minimal friction.
 
-If you want, I can send a couple of examples this week.`
+We build websites for care homes with virtual tour hubs and direct private-tour schedulers.
+
+Can I show you what an authoritative mockup layout looks like?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Care home tours",
+            body: `Hi [Name], we build care home sites with simple visit-scheduling slots to help families book private facility tours and explore amenities on mobile. Ready for a quick demo?`
+          }
+        ]
       },
-      {
-        label: "WhatsApp — Follow-up",
-        body: `Hi [Name], just checking in on my note about Driftveil Labs.
+      "Child Care & Nursery": {
+        tip: "Target busy parents. Pitch a site containing waiting-list signups, security guidelines, and childcare fee calculators.",
+        emails: [
+          {
+            label: "Hook — Waiting list registration",
+            subject: "Nursery waitlist registrations at [Business Name]",
+            body: `Hi [Name],
 
-If you're curious what our work looks like, I can send over one or two quick examples.`
+I searched for nurseries in [Area] and came across [Business Name]. I noticed your waitlist registration process requires manual paper documents.
+
+Modern parents prefer online waitlist builders, fee calculators, and security tours they can schedule from their smartphones. We build clean, responsive nursery websites that automate student registrations.
+
+Can I show you what a design layout looks like?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Nursery waitlists",
+            body: `Hi [Name], we build childcare websites featuring digital waiting list registrations and security showcases to attract local nursery admissions. Let's chat!`
+          }
+        ]
+      },
+      "Disability Support": {
+        tip: "Focus on accessibility and community. Pitch accessible designs with interactive support-services maps.",
+        emails: [
+          {
+            label: "Hook — Accessible support services",
+            subject: "Accessibility-first online hub for [Business Name]",
+            body: `Hi [Name],
+
+For a dedicated care provider like [Business Name], accessibility on your website is non-negotiable.
+
+We build accessibility-first websites with custom screen adjustment tools, service maps, and simple inquiry systems designed specifically to support disability services.
+
+Would you like to see a custom concept layout designed for [Business Name]?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — Disability support",
+            body: `Hi [Name], we build fully accessible websites for care providers featuring screen adjusters and direct support inquiry structures. Worth a brief look at some layouts?`
+          }
+        ]
       }
-    ]
+    }
+  },
+  {
+    id: "Other",
+    label: "Other Niches",
+    sub: "General and customizable cold templates",
+    icon: "✨",
+    tip: "Use these general-purpose templates if your client doesn't fit into the primary niches.",
+    subNiches: {
+      "General Outbound": {
+        tip: "A robust framework that works across any b2b trade. Simple, direct, and focused on site speed.",
+        emails: [
+          {
+            label: "Hook — General Site Audit",
+            subject: "A few things I noticed on [Business Name]'s website",
+            body: `Hi [Name],
+
+I was looking at [Business Name]'s online presence in [Area] earlier.
+
+I noticed that your site takes quite a while to load on mobile and your core contact details are nested deep inside menu structures.
+
+When potential clients find you, you only have about 3 seconds to capture their attention before they close the tab. A slow or hard-to-read site actively drives clients into your competitors' pipelines.
+
+We build completely hand-coded, lightning-fast business websites from scratch. No clunky templates, designed specifically to rank on Google.
+
+Would you be open to a 10-minute look at some of our work?
+
+[Your name]
+[Your role]
+Driftveil Labs
+[Your email]`
+          }
+        ],
+        whatsapp: [
+          {
+            label: "WhatsApp — General Outbound",
+            body: `Hi [Name], I noticed [Business Name]'s site loads slowly on mobile devices. We build high-speed custom sites designed to pull more local inquiries on mobile. Worth a quick look? [Your name] — driftveillabs.com`
+          }
+        ]
+      }
+    }
   }
 ];
 
 let activeNiche = null;
+let activeSubNiche = null;
 
 function buildSidebar() {
   const list = document.getElementById('nicheList');
@@ -1614,82 +2196,160 @@ function buildSidebar() {
 
 function selectNiche(id) {
   activeNiche = id;
+  const niche = DATA.find(n => n.id === id);
+  if (niche) {
+    // Select first sub-niche by default
+    activeSubNiche = Object.keys(niche.subNiches)[0];
+  }
   buildSidebar();
-  renderEmails(id);
+  renderApp();
 }
 
-function renderEmails(id) {
-  const niche = DATA.find(n => n.id === id);
+function selectSubNiche(subName) {
+  activeSubNiche = subName;
+  renderApp();
+}
+
+function updateAllDrafts() {
+  if (activeNiche) {
+    renderApp();
+  }
+}
+
+function getVariableValues() {
+  return {
+    senderName: document.getElementById('v_sender_name').value || "[Your Name]",
+    senderRole: document.getElementById('v_sender_role').value || "[Your Role]",
+    senderEmail: document.getElementById('v_sender_email').value || "info@driftveillabs.com",
+    clientName: document.getElementById('v_client_name').value || "[Name]",
+    clientBiz: document.getElementById('v_client_biz').value || "[Business Name]",
+    clientArea: document.getElementById('v_client_area').value || "[Area]"
+  };
+}
+
+function processTemplate(text, vars) {
+  return text
+    .replace(/\[Your name\]/g, vars.senderName)
+    .replace(/\[Your Name\]/g, vars.senderName)
+    .replace(/\[Your role\]/g, vars.senderRole)
+    .replace(/\[Your Role\]/g, vars.senderRole)
+    .replace(/\[Your email\]/g, vars.senderEmail)
+    .replace(/\[Your Email\]/g, vars.senderEmail)
+    .replace(/\[Name\]/g, vars.clientName)
+    .replace(/\[Client Contact\]/g, vars.clientName)
+    .replace(/\[Business Name\]/g, vars.clientBiz)
+    .replace(/\[Client Business\]/g, vars.clientBiz)
+    .replace(/\[Area\]/g, vars.clientArea)
+    .replace(/\[City\]/g, vars.clientArea)
+    .replace(/\[Region\]/g, vars.clientArea);
+}
+
+function renderApp() {
+  const niche = DATA.find(n => n.id === activeNiche);
   if (!niche) return;
 
   document.getElementById('welcome').style.display = 'none';
   const out = document.getElementById('emailOutput');
+  const vars = getVariableValues();
 
-  let cardsHtml = niche.emails.map((email, i) => `
-    <div class="email-card">
-      <div class="email-card-header">
-        <div style="flex:1;min-width:0">
-          <div class="email-variant-label">${email.label}</div>
-          <div class="email-subject-preview">✉ ${email.subject}</div>
-        </div>
-        <div class="email-card-actions">
-          <button class="btn btn-copy" id="copy_${id}_${i}" onclick="copyEmail(event, '${id}', ${i})">Copy</button>
-        </div>
-      </div>
-      <div class="email-body" id="body_${id}_${i}">
-        <div class="email-meta-row"><span class="meta-key">To:</span><span class="meta-val">${email.to}</span></div>
-        <div class="email-meta-row"><span class="meta-key">Subject:</span><span class="meta-val">${email.subject}</span></div>
-        <div class="divider"></div>
-        <div class="email-text">${escHtml(email.body)}</div>
-      </div>
-    </div>
-  `).join('');
+  // 1. Render Sub-Niche Pills Selector
+  const subNichesList = Object.keys(niche.subNiches);
+  const pillsHtml = subNichesList.map(subName => {
+    const isActive = activeSubNiche === subName;
+    return `<button class="subniche-pill${isActive ? ' active' : ''}" onclick="selectSubNiche('${subName}')">${subName}</button>`;
+  }).join('');
 
-  let waHtml = '';
-  if (niche.whatsapp && niche.whatsapp.length) {
-    const wCards = niche.whatsapp.map((wa, i) => `
-      <div class="wa-card">
-        <div class="wa-card-header">
+  const activeSubData = niche.subNiches[activeSubNiche];
+  if (!activeSubData) return;
+
+  // 2. Render Email Cards
+  const emailsHtml = activeSubData.emails.map((email, i) => {
+    const renderedSubject = processTemplate(email.subject, vars);
+    const renderedBody = processTemplate(email.body, vars);
+    return `
+      <div class="email-card">
+        <div class="email-card-header">
           <div style="flex:1;min-width:0">
-            <div class="wa-variant-label">${wa.label}</div>
-            <div class="wa-preview">💬 ${wa.body.split('\n')[0].slice(0,80)}…</div>
+            <div class="email-variant-label">${email.label}</div>
+            <div class="email-subject-preview">✉ ${escHtml(renderedSubject)}</div>
           </div>
           <div class="email-card-actions">
-            <button class="btn btn-wa" id="wa_${id}_${i}" onclick="copyWa(event, '${id}', ${i})">Copy</button>
+            <button class="btn btn-copy" id="copy_${activeNiche}_${i}" onclick="copyEmail(event, '${renderedSubject}', \`${escapeBackticks(renderedBody)}\`, '${activeNiche}_${i}')">Copy</button>
           </div>
         </div>
-        <div class="email-body" id="wabody_${id}_${i}">
-          <div class="email-text">${escHtml(wa.body)}</div>
+        <div class="email-body" id="body_${activeNiche}_${i}">
+          <div class="email-meta-row"><span class="meta-key">To:</span><span class="meta-val">${escHtml(vars.clientName)}</span></div>
+          <div class="email-meta-row"><span class="meta-key">Subject:</span><span class="meta-val">${escHtml(renderedSubject)}</span></div>
+          <div class="divider"></div>
+          <div class="email-text">${escHtml(renderedBody)}</div>
         </div>
       </div>
-    `).join('');
+    `;
+  }).join('');
+
+  // 3. Render WhatsApp Cards
+  let waHtml = '';
+  if (activeSubData.whatsapp && activeSubData.whatsapp.length) {
+    const wCards = activeSubData.whatsapp.map((wa, i) => {
+      const renderedBody = processTemplate(wa.body, vars);
+      return `
+        <div class="wa-card">
+          <div class="wa-card-header">
+            <div style="flex:1;min-width:0">
+              <div class="wa-variant-label">${wa.label}</div>
+              <div class="wa-preview">💬 ${escHtml(renderedBody.split('\n')[0].slice(0, 80))}…</div>
+            </div>
+            <div class="email-card-actions">
+              <button class="btn btn-wa" id="wa_${activeNiche}_${i}" onclick="copyWa(event, \`${escapeBackticks(renderedBody)}\`, '${activeNiche}_${i}')">Copy</button>
+            </div>
+          </div>
+          <div class="email-body" id="wabody_${activeNiche}_${i}">
+            <div class="email-text">${escHtml(renderedBody)}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
     waHtml = `
       <div class="section-divider">
         <div class="section-divider-line"></div>
         <div class="section-divider-label">💬 WhatsApp Drafts</div>
         <div class="section-divider-line"></div>
       </div>
-      <div class="emails-grid">${wCards}</div>`;
+      <div class="emails-grid">${wCards}</div>
+    `;
   }
 
   out.innerHTML = `
     <div class="email-section visible">
-      <div class="section-eyebrow">${niche.icon} Niche</div>
+      <div class="section-eyebrow">${niche.icon} Niche Hub</div>
       <div class="section-title">${niche.label}</div>
-      <div class="section-meta">${niche.emails.length} email draft${niche.emails.length > 1 ? 's' : ''}${niche.whatsapp ? ' · ' + niche.whatsapp.length + ' WhatsApp draft' + (niche.whatsapp.length > 1 ? 's' : '') : ''}</div>
-      <div class="emails-grid">${cardsHtml}</div>
-      ${waHtml}
-      <div class="tip-box">
-        <div class="tip-label">💡 Sending tip</div>
-        <div class="tip-text">${niche.tip}</div>
+      <div class="section-meta">Selected Category: <strong>${niche.label}</strong> / Sub-niche: <strong>${activeSubNiche}</strong></div>
+      
+      <!-- Sub-niche Pill Selectors -->
+      <div class="subniche-container">
+        <div class="subniche-label">Explore Sub-Niches:</div>
+        <div class="subniche-pills">${pillsHtml}</div>
       </div>
-    </div>`;
+
+      <!-- Email Drafts -->
+      <div class="emails-grid">
+        ${emailsHtml}
+      </div>
+
+      <!-- WhatsApp Section -->
+      ${waHtml}
+
+      <!-- Dynamic Custom Tips -->
+      <div class="tip-box">
+        <div class="tip-label">💡 Sending tip for ${activeSubNiche}</div>
+        <div class="tip-text">${activeSubData.tip || niche.tip}</div>
+      </div>
+    </div>
+  `;
 }
 
-function toggleCard(compositeId) {
-  // not used directly, handled via onclick string
-}
-
+// Card Expansion Triggers
 document.addEventListener('click', function(e) {
   const header = e.target.closest('.email-card-header, .wa-card-header');
   if (!header) return;
@@ -1699,37 +2359,83 @@ document.addEventListener('click', function(e) {
   if (body) body.classList.toggle('open');
 });
 
-function copyEmail(e, nicheId, idx) {
+// Clipboard Functions
+function copyEmail(e, subject, body, elementId) {
   e.stopPropagation();
-  const niche = DATA.find(n => n.id === nicheId);
-  if (!niche) return;
-  const email = niche.emails[idx];
-  const text = `Subject: ${email.subject}\n\n${email.body}`;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById(`copy_${nicheId}_${idx}`);
-    if (!btn) return;
-    btn.textContent = 'Copied ✓';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-  });
+  const text = `Subject: ${subject}\n\n${body}`;
+  
+  // Clipboard Fallback compatible with sandboxed environments
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => showFeedback(elementId));
+  } else {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      showFeedback(elementId);
+    } catch (err) {
+      console.error('Fallback: Oops, unable to copy', err);
+    }
+    document.body.removeChild(textArea);
+  }
 }
 
-function copyWa(e, nicheId, idx) {
+function copyWa(e, body, elementId) {
   e.stopPropagation();
-  const niche = DATA.find(n => n.id === nicheId);
-  if (!niche || !niche.whatsapp) return;
-  const wa = niche.whatsapp[idx];
-  navigator.clipboard.writeText(wa.body).then(() => {
-    const btn = document.getElementById(`wa_${nicheId}_${idx}`);
-    if (!btn) return;
+  
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(body).then(() => showFeedback(elementId, true));
+  } else {
+    const textArea = document.createElement("textarea");
+    textArea.value = body;
+    textArea.style.position = "fixed";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      showFeedback(elementId, true);
+    } catch (err) {
+      console.error('Fallback: Oops, unable to copy', err);
+    }
+    document.body.removeChild(textArea);
+  }
+}
+
+function showFeedback(elementId, isWa = false) {
+  const prefix = isWa ? 'wa_' : 'copy_';
+  const btn = document.getElementById(`${prefix}${elementId}`);
+  if (btn) {
     btn.textContent = 'Copied ✓';
     btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-  });
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  }
+  showGlobalToast();
+}
+
+let _toastTimeout;
+function showGlobalToast() {
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  clearTimeout(_toastTimeout);
+  _toastTimeout = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2500);
 }
 
 function escHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function escapeBackticks(str) {
+  return str.replace(/`/g, '\\`').replace(/\$/g, '\\$');
 }
 
 buildSidebar();
