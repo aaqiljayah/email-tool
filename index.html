@@ -180,6 +180,39 @@ body::before{
   color:var(--gold);margin-bottom:8px;
 }
 .tip-text{font-size:0.82rem;color:var(--muted);line-height:1.75}
+
+.section-divider{
+  display:flex;align-items:center;gap:12px;margin:36px 0 20px;
+}
+.section-divider-line{flex:1;height:1px;background:var(--border-dim)}
+.section-divider-label{
+  font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:800;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(37,211,102,0.7);white-space:nowrap;
+}
+.wa-card{
+  background:var(--surface);border:1px solid rgba(37,211,102,0.15);
+  border-radius:12px;overflow:hidden;
+  transition:border-color 0.25s;
+}
+.wa-card:hover{border-color:rgba(37,211,102,0.3)}
+.wa-card-header{
+  padding:18px 24px;
+  border-bottom:1px solid rgba(37,211,102,0.1);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  cursor:pointer;
+}
+.wa-variant-label{
+  font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:800;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:rgba(37,211,102,0.8);margin-bottom:4px;
+}
+.wa-preview{font-size:0.88rem;font-weight:500;color:var(--text)}
+.btn-wa{
+  background:rgba(37,211,102,0.08);border-color:rgba(37,211,102,0.25);color:rgba(37,211,102,0.9);
+}
+.btn-wa:hover{background:rgba(37,211,102,0.15)}
+.btn-wa.copied{background:rgba(61,186,111,0.12);border-color:rgba(61,186,111,0.3);color:#6ddfa0}
 </style>
 </head>
 <body>
@@ -234,67 +267,117 @@ const DATA = [
     emails: [
       {
         label: "Hook — No website, found on Google Maps",
-        subject: "Tried to visit your website. There isn't one.",
+        subject: "Quick question about [Restaurant Name]",
         to: "[Name]",
         body: `Hi [Name],
 
-Searched for [Restaurant Name] on Google Maps — found you, clicked the website link, nothing there.
+I was looking up [Restaurant Name] on Google Maps earlier — great listing, but the website link doesn't go anywhere.
 
-That means every person who finds you on Maps and wants to check your menu before they come in hits a dead end. Some of them just pick somewhere else.
+Wanted to flag it because anyone who finds you on Maps and tries to check your menu or hours before visiting just hits a dead end. A few of them will look elsewhere.
 
-We build custom restaurant websites — menu, location, opening hours, reservation link. Fast, mobile-first, looks like your brand not a template.
+We build websites for restaurants — menu, location, opening hours, reservation link. Hand-built, mobile-first, looks like your place not a template. No long-term contracts.
 
-First month hosting is free. No lock-in.
+Worth a quick 15-minute call this week?
 
-Worth 15 minutes this week?
+[Your name]
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Facebook page only",
-        subject: "Your food deserves better than a Facebook page",
+        subject: "Found [Restaurant Name] on Facebook",
         to: "[Name]",
         body: `Hi [Name],
 
-Found [Restaurant Name] on Facebook — the food looks genuinely great. But when someone searches for you on Google at 7pm trying to decide where to eat, Facebook is not where they end up. They end up at your competitor who has a proper website.
+Came across [Restaurant Name] on Facebook — the food looks genuinely great.
 
-We build custom websites for restaurants. Menu, location, contact, a way to reserve — everything a hungry person needs in one place.
+One thing I noticed: when someone searches for you on Google at 7pm trying to decide where to eat, Facebook isn't usually where they end up. They land on whoever has a proper website with a menu they can browse immediately.
 
-We're Driftveil Labs. Small studio, fast work, no templates. First month hosting on us.
+We build websites for restaurants — menu, location, how to reserve, everything a hungry person needs in one place. Hand-built, no templates, done fast.
 
-Quick call this week?
+Happy to show you a couple of examples if it's useful.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Slow or outdated website",
-        subject: "Your menu hasn't changed online since [year] — has it?",
+        subject: "A few things I noticed on [Restaurant Name]'s site",
         to: "[Name]",
         body: `Hi [Name],
 
-Checked out [Restaurant Name]'s website — took a while to load and the menu looks like it's from a couple of years ago. I'm guessing what you're actually serving right now is a lot better than what's on there.
+I had a look at [Restaurant Name]'s website earlier — it took a while to load and the menu looks like it hasn't been updated in a while. I'm guessing what you're actually serving is a lot better than what's showing online.
 
-An outdated site isn't neutral — it actively puts people off.
+An outdated site isn't just neutral — it actively puts people off before they've even walked in.
 
-We rebuild restaurant websites from scratch. Fast load, updated menu, mobile-ready. Takes the headache off you completely.
+We rebuild restaurant websites from scratch. Fast to load, easy to update, looks sharp on any phone. We handle everything so it's not another thing on your plate.
 
-Happy to show you examples. No sales pitch, just a look.
+Happy to show you some examples, no obligation.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Follow-up — No reply to first email",
-        subject: "Re: [Restaurant Name]'s website",
+        subject: "Re: [Restaurant Name]",
         to: "[Name]",
         body: `Hi [Name],
 
-Just checking this didn't get buried — sent a note last week about your website.
+Just wanted to follow up on the note I sent last week — only doing it the once, I won't keep chasing.
 
-Not asking for a commitment. Just a 15-minute call to show you what we've built for other restaurants and see if it's something that makes sense for you.
+If the timing isn't right at the moment, no problem at all. If you'd like to see what a site for [Restaurant Name] could look like before deciding, I'm happy to put something together.
 
-If the timing's off, no problem — happy to come back when it's better.
+[Your name]
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
+      }
+    ],
+    whatsapp: [
+      {
+        label: "WhatsApp — No website, found on Google Maps",
+        body: `Hi [Name], I was looking up [Restaurant Name] on Google Maps and noticed the website link isn't working.
+
+Just wanted to flag it — anyone checking your menu before visiting hits a dead end, and some will just pick somewhere else.
+
+We build websites for restaurants — menu, hours, location, reservation link. Hand-built, no templates.
+
+Worth a quick chat? I'm [Your name] from Driftveil Labs.`
+      },
+      {
+        label: "WhatsApp — Facebook page only",
+        body: `Hi [Name], came across [Restaurant Name] on Facebook — food looks great.
+
+Just noticed there's no website, which means you're missing anyone who searches Google looking for somewhere to eat.
+
+We build restaurant websites — hand-built, mobile-first, looks like your place not a template.
+
+Happy to show you some examples if you're curious. I'm [Your name] from Driftveil Labs.`
+      },
+      {
+        label: "WhatsApp — Follow-up",
+        body: `Hi [Name], just following up on the message I sent — only doing it once, I promise!
+
+If the timing's off no worries at all. If you'd like to see what a site for [Restaurant Name] could look like, happy to put something together.
+
+I'm [Your name] from Driftveil Labs — driftveillabs.com`
       }
     ]
   },
@@ -322,7 +405,13 @@ We're Driftveil Labs. First month hosting free, no templates, built to match you
 
 15 minutes to show you what it'd look like?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — No online presence",
@@ -340,7 +429,13 @@ We're Driftveil Labs. Quick to set up, first month hosting free.
 
 Worth a conversation?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Generic or template-looking site",
@@ -356,7 +451,13 @@ We build salon websites from scratch that actually look like the business they r
 
 Happy to put together a quick concept for you — no cost, just to show you what's possible.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Follow-up — No reply",
@@ -370,7 +471,37 @@ I know running a salon is full-on and email isn't always the priority. If you're
 
 If not, no hard feelings at all.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
+      }
+    ],
+    whatsapp: [
+      {
+        label: "WhatsApp — Booking via DMs",
+        body: `Hi [Name], I saw [Salon Name] is still handling bookings through Instagram DMs.
+
+That means a lot of people who want to book quickly won't follow through. A website with a booking page fixes that.
+
+We build salon sites with online booking built in. Want to see a quick example?`
+      },
+      {
+        label: "WhatsApp — No online presence",
+        body: `Hi [Name], I searched for salons in [Area] and couldn't find [Salon Name] online.
+
+If potential clients can't find you, they're going to the salon that shows up first.
+
+We build custom salon websites that actually rank and look good. Want to chat for a few minutes?`
+      },
+      {
+        label: "WhatsApp — Follow-up",
+        body: `Hi [Name], just following up on the message I sent about [Salon Name].
+
+If it's not the right time, no problem. If you'd like, I can send over a quick example of what a salon website could look like for you.`
       }
     ]
   },
@@ -398,7 +529,13 @@ Not a big investment. Not a template. Something that works while you train peopl
 
 Want to see what it'd look like for your brand?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Gym with no website",
@@ -416,7 +553,13 @@ We're Driftveil Labs. First month hosting free. No templates.
 
 Worth a quick chat?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Fitness coach selling programmes",
@@ -432,7 +575,13 @@ We're Driftveil Labs. We build these for coaches and trainers. Fast, custom, no 
 
 10 minutes to show you what we've done?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Follow-up — No reply",
@@ -446,7 +595,37 @@ One line version: we build websites for fitness professionals that actually get 
 
 If the timing's off, just say and I'll circle back. If you're curious, 15 minutes is all it takes.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
+      }
+    ],
+    whatsapp: [
+      {
+        label: "WhatsApp — Strong Instagram, invisible on Google",
+        body: `Hi [Name], I love the work you're posting on Instagram, but I couldn't find you when I googled [City] personal trainer.
+
+Instagram is great for followers. Google is great for people ready to buy. A website gives you both.
+
+Want to see a quick example?`
+      },
+      {
+        label: "WhatsApp — Gym with no website",
+        body: `Hi [Name], I searched for gyms in [Area] and [Gym Name] didn't show up.
+
+That means people looking to join a gym are landing with someone else. We build gym websites that rank and convert.
+
+Interested in a quick chat?`
+      },
+      {
+        label: "WhatsApp — Follow-up",
+        body: `Hi [Name], just circling back on my note about your website.
+
+If you're not interested, no worries. If you are, I can send a short example of a gym site that works well.`
       }
     ]
   },
@@ -474,7 +653,13 @@ We're Driftveil Labs. Fast, custom, no fluff.
 
 Would a call this week be worth your time?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — No website at all",
@@ -490,7 +675,13 @@ We build websites for professional firms. Credible, fast to load, designed to co
 
 We're Driftveil Labs. Happy to show you what we've done.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Credibility angle",
@@ -506,7 +697,13 @@ We're Driftveil Labs. No templates, custom design, fast delivery.
 
 Worth a conversation?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Follow-up — No reply",
@@ -519,6 +716,30 @@ Wanted to follow up on the note I sent last week about your website — just onc
 If it's not the right time, completely understood. If you are open to a quick look at what we do, 15 minutes on a call is genuinely all it takes.
 
 [Your name] · Driftveil Labs · info@driftveillabs.com`
+      }
+    ],
+    whatsapp: [
+      {
+        label: "WhatsApp — Dated website",
+        body: `Hi [Name], I noticed [Firm Name]'s website still looks dated and doesn't work smoothly on phones.
+
+That can make a professional firm look less credible before a potential client even calls.
+
+We build modern, professional sites for law firms and accountants. Want a quick example?`
+      },
+      {
+        label: "WhatsApp — No website at all",
+        body: `Hi [Name], I couldn't find a website for [Firm Name]. That can cost you credibility with clients who search before they call.
+
+We build clean, credible websites for firms that make you look established and make contact easy.
+
+Interested in a short example?`
+      },
+      {
+        label: "WhatsApp — Follow-up",
+        body: `Hi [Name], just checking in on my earlier note about [Firm Name]'s website.
+
+If you'd like, I can send a quick example of a firm site that looks more modern and professional.`
       }
     ]
   },
@@ -546,7 +767,13 @@ We're Driftveil Labs. No templates, first month hosting free.
 
 Happy to show you what we've done for other practices.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — No online booking",
@@ -562,7 +789,13 @@ We're Driftveil Labs. We build healthcare websites that are clean, fast, and act
 
 Worth a 15-minute call?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Generic or outdated look",
@@ -578,7 +811,13 @@ We're Driftveil Labs. Custom design, fast turnaround, first month free.
 
 Happy to send over some examples.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Follow-up — No reply",
@@ -592,7 +831,37 @@ If it's useful, I'm happy to send over a couple of examples of clinic sites we'v
 
 Either way, no pressure.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
+      }
+    ],
+    whatsapp: [
+      {
+        label: "WhatsApp — No website or broken mobile",
+        body: `Hi [Name], I searched for clinics near me and [Practice Name] either didn't show up or loaded slowly on mobile.
+
+Patients search on their phones, especially at night. If the site doesn't work, they book somewhere else.
+
+We build clinic websites that load fast and make booking simple. Want to see a quick example?`
+      },
+      {
+        label: "WhatsApp — No online booking",
+        body: `Hi [Name], I saw [Practice Name] still relies on phone calls for booking.
+
+A lot of patients would rather book or enquire online, especially outside office hours.
+
+We add simple appointment booking pages to clinic sites. Want me to send a short example?`
+      },
+      {
+        label: "WhatsApp — Follow-up",
+        body: `Hi [Name], just checking in on my note about [Practice Name]'s website.
+
+If you'd like, I can send over one or two examples of clinic sites that work better for patients.`
       }
     ]
   },
@@ -620,7 +889,13 @@ We're Driftveil Labs. First month hosting free. No long lock-in.
 
 Worth a quick chat?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Bad or generic website",
@@ -638,7 +913,13 @@ We're Driftveil Labs. Custom, fast, no templates.
 
 Happy to show you what's possible.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — No e-commerce angle",
@@ -654,7 +935,13 @@ We're Driftveil Labs. We build retail sites that look sharp and actually drive s
 
 Would love to show you what we've done for similar shops.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Follow-up — No reply",
@@ -666,7 +953,37 @@ Sent a note a few days ago — just wanted to follow up once.
 
 I know running a shop is a lot. If you ever want to see what a proper website could look like for [Store Name], I can put together a rough concept for free — no strings, just to show you what's possible.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
+      }
+    ],
+    whatsapp: [
+      {
+        label: "WhatsApp — Instagram-only, no website",
+        body: `Hi [Name], I found [Store Name] on Instagram but couldn't find a proper website for it.
+
+When someone is ready to buy, they google first. If you don't show up, they buy from someone else.
+
+We build retail sites that actually get found and look like your brand. Want a quick example?`
+      },
+      {
+        label: "WhatsApp — Bad or generic website",
+        body: `Hi [Name], your products look great on Instagram, but the website doesn't show them off properly.
+
+A better online storefront can make people want to visit or enquire rather than scroll away.
+
+I can send a short example if you're interested.`
+      },
+      {
+        label: "WhatsApp — Follow-up",
+        body: `Hi [Name], just circling back on the note I sent about [Store Name].
+
+If you'd like, I can send over a small example of a retail website that matches your brand.`
       }
     ]
   },
@@ -694,7 +1011,13 @@ We're Driftveil Labs. Custom design, not Squarespace. Something that actually lo
 
 Want to see a concept?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Linktree or generic site",
@@ -712,7 +1035,13 @@ We're Driftveil Labs. No templates, custom design, fast turnaround.
 
 10 minutes to show you what we've built?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Wedding / event photographer",
@@ -728,7 +1057,13 @@ We're Driftveil Labs. Custom, fast, first month hosting free.
 
 Would love to show you some examples.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Follow-up — No reply",
@@ -740,7 +1075,37 @@ Just following up on the message I sent last week — not trying to be pushy, ju
 
 If you're curious what a proper portfolio site could look like for your work, I'm happy to put together a rough mock for free. No commitment, just to see if it's something worth exploring.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
+      }
+    ],
+    whatsapp: [
+      {
+        label: "WhatsApp — Instagram portfolio only",
+        body: `Hi [Name], your work looks strong on Instagram, but a portfolio hidden in the app doesn't help people find you.
+
+A dedicated site gives you something to send clients that actually shows your style.
+
+Want to see a quick example?`
+      },
+      {
+        label: "WhatsApp — Linktree or generic site",
+        body: `Hi [Name], I followed the link in your bio and it goes to Linktree.
+
+For a photographer, that doesn't look like a real portfolio. A website does.
+
+I can send a short example if you'd like.`
+      },
+      {
+        label: "WhatsApp — Follow-up",
+        body: `Hi [Name], just checking in on my earlier message about your online portfolio.
+
+If you'd like, I can send a quick example of a photography site that works better than Instagram alone.`
       }
     ]
   },
@@ -768,7 +1133,13 @@ We're Driftveil Labs. Custom design, fast turnaround, first month hosting free.
 
 Worth a conversation?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Trust and credibility angle",
@@ -786,7 +1157,13 @@ We're Driftveil Labs. No templates, no fluff.
 
 Happy to show you what we've built for similar centres.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Individual tutor, no site",
@@ -804,7 +1181,13 @@ We're Driftveil Labs. Affordable, no templates, quick to deliver.
 
 Worth a chat?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Follow-up — No reply",
@@ -818,7 +1201,37 @@ One thing that might be useful: I can put together a rough look at what a websit
 
 Let me know if that's of interest.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
+      }
+    ],
+    whatsapp: [
+      {
+        label: "WhatsApp — WhatsApp only, no Google presence",
+        body: `Hi [Name], I found [Centre Name] on WhatsApp/Facebook but not on Google.
+
+Parents are googling tuition and tutors in [Area], and if you don't show up, they go to someone else.
+
+We build tuition websites that bring you into search. Want a quick example?`
+      },
+      {
+        label: "WhatsApp — Trust and credibility angle",
+        body: `Hi [Name], parents want to trust a tutor before they call.
+
+If the only thing they can find is a WhatsApp number, that's not enough. A simple site gives you credibility.
+
+I can send a quick example if you're interested.`
+      },
+      {
+        label: "WhatsApp — Follow-up",
+        body: `Hi [Name], just checking in on my note about [Centre Name].
+
+If you'd like, I can send over a short idea for a website that helps parents decide faster.`
       }
     ]
   },
@@ -846,7 +1259,13 @@ We're Driftveil Labs. First month hosting free, quick to set up.
 
 Worth 10 minutes?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Urgency-based search angle",
@@ -864,7 +1283,13 @@ We're Driftveil Labs. We build clean, search-friendly websites for tradespeople.
 
 Is it worth a quick chat?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Looks unestablished without a site",
@@ -880,7 +1305,13 @@ We build websites for contractors. Photos of your work, your services, reviews, 
 
 We're Driftveil Labs. No templates, fast setup, first month free.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Follow-up — No reply",
@@ -892,7 +1323,37 @@ Just following up on the message I sent last week — keeping it short.
 
 If you're not interested, totally fine — just say and I won't bother you again. If you are curious, even 10 minutes on a call is enough to show you what we do.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
+      }
+    ],
+    whatsapp: [
+      {
+        label: "WhatsApp — Word of mouth only",
+        body: `Hi [Name], a lot of [plumbers/electricians/builders] still rely on referrals.
+
+That's fine until the work slows down. A simple website makes sure people searching on Google can still find you when they need help.
+
+Want to see a quick example?`
+      },
+      {
+        label: "WhatsApp — Urgency-based search angle",
+        body: `Hi [Name], when someone has an emergency, they google '[trade] near me'. If [Business Name] isn't showing up, that job goes to someone else.
+
+We build simple websites for tradespeople that capture those searches.
+
+Interested in a quick chat?`
+      },
+      {
+        label: "WhatsApp — Follow-up",
+        body: `Hi [Name], just checking the message I sent about your website.
+
+If you'd like, I can send a short example of a trades website that looks professional and works on mobile.`
       }
     ]
   },
@@ -918,7 +1379,13 @@ We're Driftveil Labs. Custom, fast, first month free.
 
 Worth a conversation this week?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Looks less credible than competitors",
@@ -934,7 +1401,13 @@ We build property websites that do exactly that. Listings, your background, how 
 
 We're Driftveil Labs. No templates, custom design, quick to deliver.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Hook — Property developer, no project page",
@@ -950,7 +1423,13 @@ We build property and development websites. Fast, professional, designed to conv
 
 We're Driftveil Labs. Happy to show you examples.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Follow-up — No reply",
@@ -962,7 +1441,37 @@ Following up on the note I sent last week — just the once, I won't keep chasin
 
 If the timing isn't right, no problem. If you'd like to see what a website for [Agency Name] could look like before deciding, I'm happy to put together a rough concept for free.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
+      }
+    ],
+    whatsapp: [
+      {
+        label: "WhatsApp — Independent agent, no site",
+        body: `Hi [Name], I couldn't find a website for [Your Name / Agency]. Buyers and renters expect one before they reach out.
+
+We build property websites for agents that show listings, testimonials, and contact information clearly.
+
+Want a quick example?`
+      },
+      {
+        label: "WhatsApp — Looks less credible than competitors",
+        body: `Hi [Name], I looked at agents in [Area] and noticed [Agency Name] is the only one without a proper site.
+
+That can make you look less established even if your service is strong.
+
+I can send a short example if you're interested.`
+      },
+      {
+        label: "WhatsApp — Follow-up",
+        body: `Hi [Name], just checking in on my earlier note about [Agency Name].
+
+If you'd like, I can send a quick example of a property site that helps build trust.`
       }
     ]
   },
@@ -988,7 +1497,13 @@ I'll keep it short: 15 minutes on a call and I can show you a few things we've b
 
 When works for you?
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Warm — Post-meeting follow-up",
@@ -1002,7 +1517,13 @@ We're Driftveil Labs — we build custom websites, fully hand-coded, no template
 
 I'll send over a couple of examples this week so you can see the kind of work we do. If it looks like a fit, we hop on a call and go from there.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Warm — You know them personally",
@@ -1018,7 +1539,13 @@ Thought of you because of [Business Name] — if a website is something you've b
 
 Let me know if you're curious.
 
-[Your name] · Driftveil Labs · info@driftveillabs.com`
+[Your name]
+
+[Your role]
+
+Driftveil Labs
+
+info@driftveillabs.com · driftveillabs.com`
       },
       {
         label: "Warm — Family / close network",
@@ -1037,6 +1564,30 @@ If you want to see what we do, happy to show you — our email is info@driftveil
 Thanks so much.
 
 [Your name]`
+      }
+    ],
+    whatsapp: [
+      {
+        label: "WhatsApp — Referral intro",
+        body: `Hi [Name], [Mutual contact] suggested I reach out about [Business Name].
+
+We build custom websites for small businesses — clean, fast, and made to convert.
+
+If you want, I can send a quick example of what we do.`
+      },
+      {
+        label: "WhatsApp — Post-meeting follow-up",
+        body: `Hi [Name], good to connect recently.
+
+I wanted to follow up properly with a quick note: we build custom websites for businesses, fully hand-coded, no templates.
+
+If you want, I can send a couple of examples this week.`
+      },
+      {
+        label: "WhatsApp — Follow-up",
+        body: `Hi [Name], just checking in on my note about Driftveil Labs.
+
+If you're curious what our work looks like, I can send over one or two quick examples.`
       }
     ]
   }
@@ -1074,11 +1625,9 @@ function renderEmails(id) {
   document.getElementById('welcome').style.display = 'none';
   const out = document.getElementById('emailOutput');
 
-  const regionLabels = {lk:'🇱🇰 Sri Lanka', my:'🇲🇾 Malaysia', uk:'🇬🇧 UK'};
-
   let cardsHtml = niche.emails.map((email, i) => `
     <div class="email-card">
-      <div class="email-card-header" onclick="toggleCard(${id}_${i})">
+      <div class="email-card-header">
         <div style="flex:1;min-width:0">
           <div class="email-variant-label">${email.label}</div>
           <div class="email-subject-preview">✉ ${email.subject}</div>
@@ -1096,21 +1645,45 @@ function renderEmails(id) {
     </div>
   `).join('');
 
+  let waHtml = '';
+  if (niche.whatsapp && niche.whatsapp.length) {
+    const wCards = niche.whatsapp.map((wa, i) => `
+      <div class="wa-card">
+        <div class="wa-card-header">
+          <div style="flex:1;min-width:0">
+            <div class="wa-variant-label">${wa.label}</div>
+            <div class="wa-preview">💬 ${wa.body.split('\n')[0].slice(0,80)}…</div>
+          </div>
+          <div class="email-card-actions">
+            <button class="btn btn-wa" id="wa_${id}_${i}" onclick="copyWa(event, '${id}', ${i})">Copy</button>
+          </div>
+        </div>
+        <div class="email-body" id="wabody_${id}_${i}">
+          <div class="email-text">${escHtml(wa.body)}</div>
+        </div>
+      </div>
+    `).join('');
+    waHtml = `
+      <div class="section-divider">
+        <div class="section-divider-line"></div>
+        <div class="section-divider-label">💬 WhatsApp Drafts</div>
+        <div class="section-divider-line"></div>
+      </div>
+      <div class="emails-grid">${wCards}</div>`;
+  }
+
   out.innerHTML = `
     <div class="email-section visible">
       <div class="section-eyebrow">${niche.icon} Niche</div>
       <div class="section-title">${niche.label}</div>
-      <div class="section-meta">${niche.emails.length} draft${niche.emails.length > 1 ? 's' : ''}</div>
+      <div class="section-meta">${niche.emails.length} email draft${niche.emails.length > 1 ? 's' : ''}${niche.whatsapp ? ' · ' + niche.whatsapp.length + ' WhatsApp draft' + (niche.whatsapp.length > 1 ? 's' : '') : ''}</div>
       <div class="emails-grid">${cardsHtml}</div>
+      ${waHtml}
       <div class="tip-box">
         <div class="tip-label">💡 Sending tip</div>
         <div class="tip-text">${niche.tip}</div>
       </div>
     </div>`;
-
-  // Auto-open first card
-  const firstBody = document.getElementById(`body_${id}_0`);
-  if (firstBody) firstBody.classList.add('open');
 }
 
 function toggleCard(compositeId) {
@@ -1118,7 +1691,7 @@ function toggleCard(compositeId) {
 }
 
 document.addEventListener('click', function(e) {
-  const header = e.target.closest('.email-card-header');
+  const header = e.target.closest('.email-card-header, .wa-card-header');
   if (!header) return;
   if (e.target.closest('.email-card-actions')) return;
   const card = header.parentElement;
@@ -1134,6 +1707,20 @@ function copyEmail(e, nicheId, idx) {
   const text = `Subject: ${email.subject}\n\n${email.body}`;
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.getElementById(`copy_${nicheId}_${idx}`);
+    if (!btn) return;
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyWa(e, nicheId, idx) {
+  e.stopPropagation();
+  const niche = DATA.find(n => n.id === nicheId);
+  if (!niche || !niche.whatsapp) return;
+  const wa = niche.whatsapp[idx];
+  navigator.clipboard.writeText(wa.body).then(() => {
+    const btn = document.getElementById(`wa_${nicheId}_${idx}`);
     if (!btn) return;
     btn.textContent = 'Copied ✓';
     btn.classList.add('copied');
